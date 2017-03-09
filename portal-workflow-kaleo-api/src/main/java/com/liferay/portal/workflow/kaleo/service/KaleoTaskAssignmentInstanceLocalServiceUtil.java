@@ -190,6 +190,12 @@ public class KaleoTaskAssignmentInstanceLocalServiceUtil {
 		return getService().getKaleoTaskAssignmentInstancesCount();
 	}
 
+	public static int getKaleoTaskAssignmentInstancesCount(
+		long kaleoTaskInstanceTokenId) {
+		return getService()
+				   .getKaleoTaskAssignmentInstancesCount(kaleoTaskInstanceTokenId);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*

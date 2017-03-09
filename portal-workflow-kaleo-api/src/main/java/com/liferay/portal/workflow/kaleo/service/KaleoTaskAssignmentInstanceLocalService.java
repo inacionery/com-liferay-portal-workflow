@@ -171,6 +171,10 @@ public interface KaleoTaskAssignmentInstanceLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getKaleoTaskAssignmentInstancesCount();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getKaleoTaskAssignmentInstancesCount(
+		long kaleoTaskInstanceTokenId);
+
 	/**
 	* Returns the OSGi service identifier.
 	*
