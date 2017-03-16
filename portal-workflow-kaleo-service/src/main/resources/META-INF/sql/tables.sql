@@ -61,14 +61,11 @@ create table KaleoDefinitionVersion (
 	statusByUserName VARCHAR(75) null,
 	statusDate DATE null,
 	createDate DATE null,
-	kaleoDefinitionId LONG,
 	name VARCHAR(200) null,
 	title STRING null,
 	description STRING null,
 	content TEXT null,
 	version VARCHAR(75) null,
-	active_ BOOLEAN,
-	startKaleoNodeId LONG,
 	status INTEGER
 );
 

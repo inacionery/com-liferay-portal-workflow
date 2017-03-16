@@ -18,14 +18,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowDefinition;
+import com.liferay.portal.kernel.workflow.DefaultWorkflowDefinitionVersion;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowInstance;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowLog;
 import com.liferay.portal.kernel.workflow.DefaultWorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionVersion;
 import com.liferay.portal.kernel.workflow.WorkflowInstance;
 import com.liferay.portal.kernel.workflow.WorkflowLog;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
@@ -42,7 +42,6 @@ import com.liferay.portal.workflow.kaleo.model.KaleoTaskAssignmentInstance;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
 import com.liferay.portal.workflow.kaleo.runtime.util.WorkflowContextUtil;
 import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionLocalService;
-import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionVersionLocalService;
 
 import java.io.Serializable;
 
@@ -122,54 +121,24 @@ public class KaleoWorkflowModelConverterImpl
 	}
 
 	@Override
-	public WorkflowDefinition toWorkflowDefinition(
+	public WorkflowDefinitionVersion toWorkflowDefinitionVersion(
 		KaleoDefinitionVersion kaleoDefinitionVersion) {
 
-		DefaultWorkflowDefinition defaultWorkflowDefinition =
-			new DefaultWorkflowDefinition();
+		DefaultWorkflowDefinitionVersion defaultWorkflowDefinitionVersion =
+			new DefaultWorkflowDefinitionVersion();
 
-		defaultWorkflowDefinition.setActive(kaleoDefinitionVersion.getActive());
+		defaultWorkflowDefinitionVersion.setContent(
+			kaleoDefinitionVersion.getContent());
+		defaultWorkflowDefinitionVersion.setName(
+			kaleoDefinitionVersion.getName());
+		defaultWorkflowDefinitionVersion.setStatus(
+			kaleoDefinitionVersion.getStatus());
+		defaultWorkflowDefinitionVersion.setVersion(
+			kaleoDefinitionVersion.getVersion());
+		defaultWorkflowDefinitionVersion.setTitle(
+			kaleoDefinitionVersion.getTitle());
 
-		String content = kaleoDefinitionVersion.getContent();
-
-		if (Validator.isNull(content)) {
-			try {
-				KaleoDefinition kaleoDefinition =
-					_kaleoDefinitionLocalService.fetchKaleoDefinition(
-						kaleoDefinitionVersion.getCompanyId(),
-						kaleoDefinitionVersion.getName(),
-						getVersion(kaleoDefinitionVersion.getVersion()));
-
-				if (kaleoDefinition != null) {
-					content = _definitionExporter.export(
-						kaleoDefinition.getKaleoDefinitionId());
-
-					kaleoDefinition.setContent(content);
-
-					_kaleoDefinitionLocalService.updateKaleoDefinition(
-						kaleoDefinition);
-
-					kaleoDefinitionVersion.setContent(content);
-
-					_kaleoDefinitionVersionLocalService.
-						updateKaleoDefinitionVersion(kaleoDefinitionVersion);
-				}
-			}
-			catch (Exception e) {
-				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to export definition to string", e);
-				}
-			}
-		}
-
-		defaultWorkflowDefinition.setContent(content);
-
-		defaultWorkflowDefinition.setName(kaleoDefinitionVersion.getName());
-		defaultWorkflowDefinition.setTitle(kaleoDefinitionVersion.getTitle());
-		defaultWorkflowDefinition.setVersion(
-			getVersion(kaleoDefinitionVersion.getVersion()));
-
-		return defaultWorkflowDefinition;
+		return defaultWorkflowDefinitionVersion;
 	}
 
 	@Override
@@ -312,12 +281,6 @@ public class KaleoWorkflowModelConverterImpl
 		return defaultWorkflowTask;
 	}
 
-	protected int getVersion(String version) {
-		int[] versionParts = StringUtil.split(version, StringPool.PERIOD, 0);
-
-		return versionParts[0];
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoWorkflowModelConverterImpl.class);
 
@@ -326,9 +289,5 @@ public class KaleoWorkflowModelConverterImpl
 
 	@Reference
 	private KaleoDefinitionLocalService _kaleoDefinitionLocalService;
-
-	@Reference
-	private KaleoDefinitionVersionLocalService
-		_kaleoDefinitionVersionLocalService;
 
 }

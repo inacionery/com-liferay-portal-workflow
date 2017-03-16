@@ -236,20 +236,6 @@ public interface KaleoDefinitionVersionModel extends BaseModel<KaleoDefinitionVe
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the kaleo definition ID of this kaleo definition version.
-	 *
-	 * @return the kaleo definition ID of this kaleo definition version
-	 */
-	public long getKaleoDefinitionId();
-
-	/**
-	 * Sets the kaleo definition ID of this kaleo definition version.
-	 *
-	 * @param kaleoDefinitionId the kaleo definition ID of this kaleo definition version
-	 */
-	public void setKaleoDefinitionId(long kaleoDefinitionId);
-
-	/**
 	 * Returns the name of this kaleo definition version.
 	 *
 	 * @return the name of this kaleo definition version
@@ -407,41 +393,6 @@ public interface KaleoDefinitionVersionModel extends BaseModel<KaleoDefinitionVe
 	 * @param version the version of this kaleo definition version
 	 */
 	public void setVersion(String version);
-
-	/**
-	 * Returns the active of this kaleo definition version.
-	 *
-	 * @return the active of this kaleo definition version
-	 */
-	public boolean getActive();
-
-	/**
-	 * Returns <code>true</code> if this kaleo definition version is active.
-	 *
-	 * @return <code>true</code> if this kaleo definition version is active; <code>false</code> otherwise
-	 */
-	public boolean isActive();
-
-	/**
-	 * Sets whether this kaleo definition version is active.
-	 *
-	 * @param active the active of this kaleo definition version
-	 */
-	public void setActive(boolean active);
-
-	/**
-	 * Returns the start kaleo node ID of this kaleo definition version.
-	 *
-	 * @return the start kaleo node ID of this kaleo definition version
-	 */
-	public long getStartKaleoNodeId();
-
-	/**
-	 * Sets the start kaleo node ID of this kaleo definition version.
-	 *
-	 * @param startKaleoNodeId the start kaleo node ID of this kaleo definition version
-	 */
-	public void setStartKaleoNodeId(long startKaleoNodeId);
 
 	/**
 	 * Returns the status of this kaleo definition version.

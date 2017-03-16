@@ -65,7 +65,7 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(37);
+		StringBundler sb = new StringBundler(31);
 
 		sb.append("{kaleoDefinitionVersionId=");
 		sb.append(kaleoDefinitionVersionId);
@@ -85,8 +85,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 		sb.append(statusDate);
 		sb.append(", createDate=");
 		sb.append(createDate);
-		sb.append(", kaleoDefinitionId=");
-		sb.append(kaleoDefinitionId);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", title=");
@@ -97,10 +95,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 		sb.append(content);
 		sb.append(", version=");
 		sb.append(version);
-		sb.append(", active=");
-		sb.append(active);
-		sb.append(", startKaleoNodeId=");
-		sb.append(startKaleoNodeId);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append("}");
@@ -147,8 +141,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 			kaleoDefinitionVersionImpl.setCreateDate(new Date(createDate));
 		}
 
-		kaleoDefinitionVersionImpl.setKaleoDefinitionId(kaleoDefinitionId);
-
 		if (name == null) {
 			kaleoDefinitionVersionImpl.setName(StringPool.BLANK);
 		}
@@ -184,8 +176,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 			kaleoDefinitionVersionImpl.setVersion(version);
 		}
 
-		kaleoDefinitionVersionImpl.setActive(active);
-		kaleoDefinitionVersionImpl.setStartKaleoNodeId(startKaleoNodeId);
 		kaleoDefinitionVersionImpl.setStatus(status);
 
 		kaleoDefinitionVersionImpl.resetOriginalValues();
@@ -208,17 +198,11 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 		statusByUserName = objectInput.readUTF();
 		statusDate = objectInput.readLong();
 		createDate = objectInput.readLong();
-
-		kaleoDefinitionId = objectInput.readLong();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
 		description = objectInput.readUTF();
 		content = objectInput.readUTF();
 		version = objectInput.readUTF();
-
-		active = objectInput.readBoolean();
-
-		startKaleoNodeId = objectInput.readLong();
 
 		status = objectInput.readInt();
 	}
@@ -252,8 +236,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 
 		objectOutput.writeLong(statusDate);
 		objectOutput.writeLong(createDate);
-
-		objectOutput.writeLong(kaleoDefinitionId);
 
 		if (name == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
@@ -290,10 +272,6 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 			objectOutput.writeUTF(version);
 		}
 
-		objectOutput.writeBoolean(active);
-
-		objectOutput.writeLong(startKaleoNodeId);
-
 		objectOutput.writeInt(status);
 	}
 
@@ -306,13 +284,10 @@ public class KaleoDefinitionVersionCacheModel implements CacheModel<KaleoDefinit
 	public String statusByUserName;
 	public long statusDate;
 	public long createDate;
-	public long kaleoDefinitionId;
 	public String name;
 	public String title;
 	public String description;
 	public String content;
 	public String version;
-	public boolean active;
-	public long startKaleoNodeId;
 	public int status;
 }

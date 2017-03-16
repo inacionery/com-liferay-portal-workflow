@@ -43,14 +43,11 @@ public class KaleoDefinitionVersionSoap implements Serializable {
 		soapModel.setStatusByUserName(model.getStatusByUserName());
 		soapModel.setStatusDate(model.getStatusDate());
 		soapModel.setCreateDate(model.getCreateDate());
-		soapModel.setKaleoDefinitionId(model.getKaleoDefinitionId());
 		soapModel.setName(model.getName());
 		soapModel.setTitle(model.getTitle());
 		soapModel.setDescription(model.getDescription());
 		soapModel.setContent(model.getContent());
 		soapModel.setVersion(model.getVersion());
-		soapModel.setActive(model.getActive());
-		soapModel.setStartKaleoNodeId(model.getStartKaleoNodeId());
 		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
@@ -179,14 +176,6 @@ public class KaleoDefinitionVersionSoap implements Serializable {
 		_createDate = createDate;
 	}
 
-	public long getKaleoDefinitionId() {
-		return _kaleoDefinitionId;
-	}
-
-	public void setKaleoDefinitionId(long kaleoDefinitionId) {
-		_kaleoDefinitionId = kaleoDefinitionId;
-	}
-
 	public String getName() {
 		return _name;
 	}
@@ -227,26 +216,6 @@ public class KaleoDefinitionVersionSoap implements Serializable {
 		_version = version;
 	}
 
-	public boolean getActive() {
-		return _active;
-	}
-
-	public boolean isActive() {
-		return _active;
-	}
-
-	public void setActive(boolean active) {
-		_active = active;
-	}
-
-	public long getStartKaleoNodeId() {
-		return _startKaleoNodeId;
-	}
-
-	public void setStartKaleoNodeId(long startKaleoNodeId) {
-		_startKaleoNodeId = startKaleoNodeId;
-	}
-
 	public int getStatus() {
 		return _status;
 	}
@@ -264,13 +233,10 @@ public class KaleoDefinitionVersionSoap implements Serializable {
 	private String _statusByUserName;
 	private Date _statusDate;
 	private Date _createDate;
-	private long _kaleoDefinitionId;
 	private String _name;
 	private String _title;
 	private String _description;
 	private String _content;
 	private String _version;
-	private boolean _active;
-	private long _startKaleoNodeId;
 	private int _status;
 }

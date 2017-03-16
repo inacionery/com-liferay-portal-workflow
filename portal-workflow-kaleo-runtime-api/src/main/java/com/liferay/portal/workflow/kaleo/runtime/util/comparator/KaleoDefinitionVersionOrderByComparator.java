@@ -16,7 +16,7 @@ package com.liferay.portal.workflow.kaleo.runtime.util.comparator;
 
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.OrderByComparatorAdapter;
-import com.liferay.portal.kernel.workflow.WorkflowDefinition;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionVersion;
 import com.liferay.portal.workflow.kaleo.KaleoWorkflowModelConverter;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 
@@ -24,11 +24,12 @@ import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
  * @author Inácio Nery
  */
 public class KaleoDefinitionVersionOrderByComparator extends
-	OrderByComparatorAdapter<KaleoDefinitionVersion, WorkflowDefinition> {
+	OrderByComparatorAdapter<KaleoDefinitionVersion,
+		WorkflowDefinitionVersion> {
 
 	public static OrderByComparator<KaleoDefinitionVersion>
 		getOrderByComparator(
-			OrderByComparator<WorkflowDefinition> orderByComparator,
+			OrderByComparator<WorkflowDefinitionVersion> orderByComparator,
 			KaleoWorkflowModelConverter kaleoWorkflowModelConverter) {
 
 		if (orderByComparator == null) {
@@ -40,15 +41,15 @@ public class KaleoDefinitionVersionOrderByComparator extends
 	}
 
 	@Override
-	public WorkflowDefinition adapt(
+	public WorkflowDefinitionVersion adapt(
 		KaleoDefinitionVersion kaleoDefinitionVersion) {
 
-		return _kaleoWorkflowModelConverter.toWorkflowDefinition(
+		return _kaleoWorkflowModelConverter.toWorkflowDefinitionVersion(
 			kaleoDefinitionVersion);
 	}
 
 	private KaleoDefinitionVersionOrderByComparator(
-		OrderByComparator<WorkflowDefinition> orderByComparator,
+		OrderByComparator<WorkflowDefinitionVersion> orderByComparator,
 		KaleoWorkflowModelConverter kaleoWorkflowModelConverter) {
 
 		super(orderByComparator);

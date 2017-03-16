@@ -49,26 +49,3 @@ addMenuItems.add(new AddMenuItem(HtmlUtil.escape(LanguageUtil.get(request, "uplo
 		addMenuItems="<%= addMenuItems %>"
 	/>
 </c:if>
-
-<c:if test='<%= DeployManagerUtil.isDeployed("kaleo-designer-portlet") %>'>
-	<aui:script>
-		Liferay.provide(
-			window,
-			'<portlet:namespace />openKaleoDesigner',
-			function(workflowDefinitionName, workflowDefinitionVersion, saveCallback, openerWindowName) {
-				Liferay.Util.openKaleoDesignerPortlet(
-					{
-						availablePropertyModels: 'Liferay.KaleoDesigner.AVAILABLE_PROPERTY_MODELS.KALEO_FORMS_EDIT',
-						name: workflowDefinitionName,
-						openerWindowName: openerWindowName,
-						portletResourceNamespace: '<%= renderResponse.getNamespace() %>',
-						saveCallback: saveCallback,
-						version: workflowDefinitionVersion,
-						versionLabel: '<liferay-ui:message key="version" />'
-					}
-				);
-			},
-			['aui-base']
-		);
-	</aui:script>
-</c:if>

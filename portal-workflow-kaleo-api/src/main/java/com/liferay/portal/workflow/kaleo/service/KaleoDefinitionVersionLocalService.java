@@ -128,11 +128,6 @@ public interface KaleoDefinitionVersionLocalService extends BaseLocalService,
 		java.lang.String name, java.lang.String version)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDefinitionVersion getKaleoDefinitionVersion(
-		long kaleoDefinitionId, java.lang.String version)
-		throws PortalException;
-
 	/**
 	* Returns the kaleo definition version with the primary key.
 	*
@@ -143,10 +138,6 @@ public interface KaleoDefinitionVersionLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public KaleoDefinitionVersion getKaleoDefinitionVersion(
 		long kaleoDefinitionVersionId) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public KaleoDefinitionVersion getLatestKaleoDefinitionVersion(
-		long kaleoDefinitionId) throws PortalException;
 
 	/**
 	* Updates the kaleo definition version in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
@@ -170,15 +161,8 @@ public interface KaleoDefinitionVersionLocalService extends BaseLocalService,
 	public int getKaleoDefinitionVersionsCount(long companyId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoDefinitionVersionsCount(long companyId, boolean active);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getKaleoDefinitionVersionsCount(long companyId,
 		java.lang.String name);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getKaleoDefinitionVersionsCount(long companyId,
-		java.lang.String name, boolean active);
 
 	/**
 	* Returns the OSGi service identifier.
@@ -243,22 +227,12 @@ public interface KaleoDefinitionVersionLocalService extends BaseLocalService,
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDefinitionVersion> getKaleoDefinitionVersions(
-		long companyId, boolean active, int start, int end,
-		OrderByComparator<KaleoDefinitionVersion> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDefinitionVersion> getKaleoDefinitionVersions(
 		long companyId, int start, int end,
 		OrderByComparator<KaleoDefinitionVersion> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDefinitionVersion> getKaleoDefinitionVersions(
 		long companyId, java.lang.String name) throws PortalException;
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<KaleoDefinitionVersion> getKaleoDefinitionVersions(
-		long companyId, java.lang.String name, boolean active, int start,
-		int end, OrderByComparator<KaleoDefinitionVersion> orderByComparator);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<KaleoDefinitionVersion> getKaleoDefinitionVersions(

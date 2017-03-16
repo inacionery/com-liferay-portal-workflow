@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.util.PredicateFilter;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionVersion;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionVersionManagerUtil;
 import com.liferay.portal.workflow.definition.web.internal.display.context.util.WorkflowDefinitionRequestHelper;
 import com.liferay.portal.workflow.definition.web.internal.search.WorkflowDefinitionSearchTerms;
 import com.liferay.portal.workflow.definition.web.internal.util.WorkflowDefinitionPortletUtil;
@@ -91,6 +93,14 @@ public class WorkflowDefinitionDisplayContext {
 
 		searchContainer.setTotal(workflowDefinitions.size());
 
+		if (workflowDefinitions.size() >
+				(searchContainer.getEnd() - searchContainer.getStart())) {
+
+			workflowDefinitions = ListUtil.subList(
+				workflowDefinitions, searchContainer.getStart(),
+				searchContainer.getEnd());
+		}
+
 		return workflowDefinitions;
 	}
 
@@ -106,12 +116,20 @@ public class WorkflowDefinitionDisplayContext {
 		return String.valueOf(workflowDefinition.getVersion());
 	}
 
-	public List<WorkflowDefinition> getWorkflowDefinitions(String name)
+	public String getVersion(
+		WorkflowDefinitionVersion workflowDefinitionVersion) {
+
+		return workflowDefinitionVersion.getVersion();
+	}
+
+	public List<WorkflowDefinitionVersion> getWorkflowDefinitionVersions(
+			String name)
 		throws PortalException {
 
-		return WorkflowDefinitionManagerUtil.getWorkflowDefinitions(
-			_workflowDefinitionRequestHelper.getCompanyId(), name,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+		return WorkflowDefinitionVersionManagerUtil.
+			getWorkflowDefinitionVersions(
+				_workflowDefinitionRequestHelper.getCompanyId(), name,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	protected PredicateFilter<WorkflowDefinition> createPredicateFilter(

@@ -19,29 +19,29 @@
 <%
 String redirect = ParamUtil.getString(request, "redirect");
 
-WorkflowDefinition workflowDefinition = (WorkflowDefinition)request.getAttribute(WebKeys.WORKFLOW_DEFINITION);
+WorkflowDefinitionVersion workflowDefinitionVersion = (WorkflowDefinitionVersion)request.getAttribute(WebKeys.WORKFLOW_DEFINITION_VERSION);
 
 String content = StringPool.BLANK;
+String name = StringPool.BLANK;
+String version = StringPool.BLANK;
 
-if (workflowDefinition != null) {
-	content = workflowDefinition.getContent();
+if (workflowDefinitionVersion != null) {
+	content = workflowDefinitionVersion.getContent();
+	name = workflowDefinitionVersion.getName();
+	version = StringUtil.extractFirst(workflowDefinitionVersion.getVersion(), StringPool.PERIOD);
 }
-
-PortletURL portletURL = renderResponse.createRenderURL();
-
-portletURL.setParameter("mvcPath", "/view.jsp");
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, (workflowDefinition == null) ? "upload-definition" : workflowDefinition.getName()) : workflowDefinition.getName());
+renderResponse.setTitle((workflowDefinitionVersion == null) ? LanguageUtil.get(request, (workflowDefinitionVersion == null) ? "new-definition" : workflowDefinitionVersion.getName()) : workflowDefinitionVersion.getName());
 %>
 
-<liferay-portlet:actionURL name='<%= (workflowDefinition == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
+<liferay-portlet:actionURL name='<%= (workflowDefinitionVersion == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
 	<portlet:param name="mvcPath" value="/edit_workflow_definition.jsp" />
 </liferay-portlet:actionURL>
 
-<c:if test="<%= workflowDefinition != null %>">
+<c:if test="<%= workflowDefinitionVersion != null %>">
 	<liferay-frontend:management-bar>
 		<liferay-frontend:management-bar-buttons>
 			<liferay-frontend:management-bar-sidenav-toggler-button
@@ -53,7 +53,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 </c:if>
 
 <div class="closed container-fluid-1280 sidenav-container sidenav-right" id="<portlet:namespace />infoPanelId">
-	<c:if test="<%= workflowDefinition != null %>">
+	<c:if test="<%= workflowDefinitionVersion != null %>">
 		<div class="sidenav-menu-slider">
 			<div class="sidebar sidebar-default sidenav-menu">
 				<div class="sidebar-header">
@@ -64,11 +64,13 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 					<liferay-ui:section>
 						<div class="sidebar-body">
 							<h3 class="version">
-								<liferay-ui:message key="version" /> <%= workflowDefinition.getVersion() %>
+								<liferay-ui:message key="version" /> <%= workflowDefinitionVersion.getVersion() %>
 							</h3>
 
 							<div>
-								<aui:model-context bean="<%= workflowDefinition %>" model="<%= WorkflowDefinition.class %>" />
+								<aui:model-context bean="<%= workflowDefinitionVersion %>" model="<%= WorkflowDefinitionVersion.class %>" />
+
+								<aui:workflow-status model="<%= WorkflowDefinitionVersion.class %>" status="<%= workflowDefinitionVersion.getStatus() %>" />
 							</div>
 						</div>
 					</liferay-ui:section>
@@ -88,16 +90,18 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 	<div class="sidenav-content">
 		<aui:form action="<%= editWorkflowDefinitionURL %>" method="post" name="fm">
 			<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+			<aui:input name="name" type="hidden" value="<%= name %>" />
+			<aui:input name="version" type="hidden" value="<%= version %>" />
 			<aui:input name="content" type="hidden" value="<%= content %>" />
 
 			<div class="card-horizontal">
 				<div class="card-row-padded">
-					<liferay-ui:error exception="<%= WorkflowDefinitionFileException.class %>" message="please-enter-a-valid-file" />
+					<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>" message="please-enter-a-valid-definition" />
 
 					<aui:fieldset>
 						<aui:col>
 							<aui:field-wrapper label="title">
-								<liferay-ui:input-localized name="title" xml='<%= BeanPropertiesUtil.getString(workflowDefinition, "title") %>' />
+								<liferay-ui:input-localized name="title" xml='<%= BeanPropertiesUtil.getString(workflowDefinitionVersion, "title") %>' />
 							</aui:field-wrapper>
 						</aui:col>
 

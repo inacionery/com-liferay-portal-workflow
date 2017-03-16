@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.messaging.proxy.ProxyMessageListener;
 import com.liferay.portal.kernel.scheduler.messaging.SchedulerEventMessageListenerWrapper;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
+import com.liferay.portal.kernel.workflow.WorkflowDefinitionVersionManager;
 import com.liferay.portal.kernel.workflow.WorkflowEngineManager;
 import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
 import com.liferay.portal.kernel.workflow.WorkflowLogManager;
@@ -203,6 +204,16 @@ public class KaleoWorkflowMessagingConfigurator {
 			setWorkflowDefinitionManagerListener(
 				workflowDefinitionManagerProxyMessageListener);
 
+		MessageListener workflowDefinitionVersionManagerProxyMessageListener =
+			registerProxyMessageListener(
+				_workflowDefinitionVersionManager,
+				com.liferay.portal.kernel.messaging.DestinationNames.
+					WORKFLOW_DEFINITION_VERSION);
+
+		_defaultWorkflowDestinationEventListener.
+			setWorkflowDefinitionManagerListener(
+				workflowDefinitionVersionManagerProxyMessageListener);
+
 		MessageListener workflowEngineManagerProxyMessageListener =
 			registerProxyMessageListener(
 				_workflowEngineManager,
@@ -349,6 +360,9 @@ public class KaleoWorkflowMessagingConfigurator {
 
 	@Reference(target = "(proxy.bean=false)")
 	private WorkflowDefinitionManager _workflowDefinitionManager;
+
+	@Reference(target = "(proxy.bean=false)")
+	private WorkflowDefinitionVersionManager _workflowDefinitionVersionManager;
 
 	@Reference(
 		target = "(destination.name=" + com.liferay.portal.kernel.messaging.DestinationNames.WORKFLOW_ENGINE + ")"
