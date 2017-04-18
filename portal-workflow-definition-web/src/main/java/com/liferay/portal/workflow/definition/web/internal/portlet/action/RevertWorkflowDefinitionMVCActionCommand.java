@@ -20,14 +20,12 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
-import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Inácio Nery
@@ -64,8 +62,5 @@ public class RevertWorkflowDefinitionMVCActionCommand
 			companyId, themeDisplay.getUserId(), workflowDefinition.getTitle(),
 			workflowDefinition.getContent().getBytes());
 	}
-
-	@Reference
-	protected WorkflowDefinitionManager workflowDefinitionManager;
 
 }
