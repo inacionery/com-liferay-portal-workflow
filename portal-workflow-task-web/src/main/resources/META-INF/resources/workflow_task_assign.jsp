@@ -22,6 +22,8 @@ WorkflowTask workflowTask = workflowTaskDisplayContext.getWorkflowTask();
 boolean hasOtherAssignees = workflowTaskDisplayContext.hasOtherAssignees(workflowTask);
 
 long assigneeUserId = ParamUtil.getLong(renderRequest, "assigneeUserId");
+
+String redirect = ParamUtil.getString(request, "redirect");
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="assignWorkflowTask" var="assignURL" />
@@ -72,6 +74,7 @@ long assigneeUserId = ParamUtil.getLong(renderRequest, "assigneeUserId");
 					form: {id: '<portlet:namespace/>assignFm'},
 					on: {
 						success: function() {
+							Liferay.Util.getOpener().<portlet:namespace />refreshPortlet('<%= redirect.toString() %>');
 							Liferay.Util.getWindow('<portlet:namespace />assignToDialog').destroy();
 						}
 					}

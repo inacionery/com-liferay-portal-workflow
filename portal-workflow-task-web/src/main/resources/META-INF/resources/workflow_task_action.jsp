@@ -70,6 +70,7 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 	<c:if test="<%= !workflowTask.isCompleted() && !workflowTaskDisplayContext.isAssignedToUser(workflowTask) %>">
 		<liferay-portlet:renderURL var="assignToMeURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 			<portlet:param name="mvcPath" value="/workflow_task_assign.jsp" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
 			<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
 			<portlet:param name="assigneeUserId" value="<%= String.valueOf(user.getUserId()) %>" />
 		</liferay-portlet:renderURL>
@@ -83,6 +84,7 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 
 	<liferay-portlet:renderURL var="assignURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
 		<portlet:param name="mvcPath" value="/workflow_task_assign.jsp" />
+		<portlet:param name="redirect" value="<%= redirectURL.toString() %>" />
 		<portlet:param name="workflowTaskId" value="<%= String.valueOf(workflowTask.getWorkflowTaskId()) %>" />
 	</liferay-portlet:renderURL>
 
@@ -149,11 +151,6 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 					dialog: {
 						destroyOnHide: true,
 						height: 210,
-						on: {
-							destroy: function() {
-								window.location.reload();
-							}
-						},
 						width: 720
 					},
 					id: '<portlet:namespace />assignToDialog',
@@ -174,11 +171,6 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 					dialog: {
 						destroyOnHide: true,
 						height: 290,
-						on: {
-							destroy: function() {
-								window.location.reload();
-							}
-						},
 						width: 720
 					},
 					id: '<portlet:namespace />assignToDialog',
@@ -189,4 +181,14 @@ redirectURL.setParameter("mvcPath", "/view.jsp");
 		},
 		['liferay-util']
 	);
+
+	Liferay.provide(
+		window,
+		'<portlet:namespace />refreshPortlet',
+		function(uri) {
+			location.href = uri;
+		},
+		['aui-dialog','aui-dialog-iframe']
+	);
+
 </aui:script>
