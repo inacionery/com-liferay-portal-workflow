@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.Sync;
 import com.liferay.portal.kernel.test.rule.SynchronousDestinationTestRule;
@@ -699,35 +698,27 @@ public class WorkflowTaskManagerImplTest
 		Assert.assertEquals(
 			WorkflowConstants.STATUS_APPROVED, fileVersion.getStatus());
 
-		long fileEntryId = fileVersion.getFileEntryId();
-
-		FileEntry fileEntry = DLAppServiceUtil.updateFileEntry(
-			fileEntryId, StringPool.BLANK, fileVersion.getMimeType(),
-			RandomTestUtil.randomString(), StringPool.BLANK, null, false, null,
-			0, serviceContext);
-
-		FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
+		fileVersion = updateFileVersion(fileVersion.getFileEntryId());
 
 		Assert.assertEquals(
-			WorkflowConstants.STATUS_PENDING, latestFileVersion.getStatus());
+			WorkflowConstants.STATUS_PENDING, fileVersion.getStatus());
 
-		DLTrashServiceUtil.moveFileEntryToTrash(fileEntryId);
+		FileEntry fileEntry = DLTrashServiceUtil.moveFileEntryToTrash(
+			fileVersion.getFileEntryId());
 
-		WorkflowInstanceLink workflowInstanceLink =
-			WorkflowInstanceLinkLocalServiceUtil.fetchWorkflowInstanceLink(
-				latestFileVersion.getCompanyId(),
-				latestFileVersion.getGroupId(),
-				DLFileEntryConstants.getClassName(),
-				latestFileVersion.getFileVersionId());
+		WorkflowInstanceLink workflowInstanceLink = fetchWorkflowInstanceLink(
+			DLFileEntryConstants.getClassName(),
+			fileVersion.getFileVersionId());
 
 		Assert.assertNull(workflowInstanceLink);
 
-		DLTrashServiceUtil.restoreFileEntryFromTrash(fileEntryId);
+		DLTrashServiceUtil.restoreFileEntryFromTrash(
+			fileVersion.getFileEntryId());
 
-		latestFileVersion = fileEntry.getLatestFileVersion();
+		fileVersion = fileEntry.getLatestFileVersion();
 
 		Assert.assertEquals(
-			WorkflowConstants.STATUS_DRAFT, latestFileVersion.getStatus());
+			WorkflowConstants.STATUS_DRAFT, fileVersion.getStatus());
 	}
 
 	@Test
