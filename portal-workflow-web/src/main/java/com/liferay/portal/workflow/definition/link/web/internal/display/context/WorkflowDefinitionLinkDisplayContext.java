@@ -69,10 +69,9 @@ import javax.servlet.http.HttpServletRequest;
 public class WorkflowDefinitionLinkDisplayContext {
 
 	public WorkflowDefinitionLinkDisplayContext(
-			RenderRequest renderRequest, RenderResponse renderResponse,
-			WorkflowDefinitionLinkLocalService
-				workflowDefinitionLinkLocalService)
-		throws PortalException {
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		WorkflowDefinitionLinkLocalService
+			workflowDefinitionLinkLocalService) {
 
 		_workflowDefinitionLinkLocalService =
 			workflowDefinitionLinkLocalService;
@@ -182,7 +181,7 @@ public class WorkflowDefinitionLinkDisplayContext {
 		return _orderByType;
 	}
 
-	public PortletURL getPortletURL() throws PortalException {
+	public PortletURL getPortletURL() {
 		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
 
 		portletURL.setParameter("mvcPath", "/definition_link/view.jsp");

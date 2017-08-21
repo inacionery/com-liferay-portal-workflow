@@ -299,9 +299,7 @@ public class WorkflowInstanceEditDisplayContext
 	}
 
 	public boolean isWorkflowTasksEmpty() throws PortalException {
-		List<WorkflowTask> workflowTasks = getWorkflowTasks();
-
-		return workflowTasks.isEmpty();
+		return getWorkflowTasks().isEmpty();
 	}
 
 	protected String getActorName(WorkflowLog workflowLog)

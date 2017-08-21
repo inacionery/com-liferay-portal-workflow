@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.instance.web.internal.portlet.action;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -63,7 +64,7 @@ public class DeleteWorkflowInstanceMVCActionCommand
 
 	protected void deleteWorkflowInstance(
 			Map<String, Serializable> workflowContext)
-		throws Exception {
+		throws PortalException {
 
 		long companyId = GetterUtil.getLong(
 			workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));
@@ -120,7 +121,7 @@ public class DeleteWorkflowInstanceMVCActionCommand
 	}
 
 	protected WorkflowInstance getWorkflowInstance(ActionRequest actionRequest)
-		throws Exception {
+		throws PortalException {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -133,7 +134,7 @@ public class DeleteWorkflowInstanceMVCActionCommand
 	}
 
 	protected void updateEntryStatus(Map<String, Serializable> workflowContext)
-		throws Exception {
+		throws PortalException {
 
 		String className = GetterUtil.getString(
 			workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));
@@ -146,7 +147,7 @@ public class DeleteWorkflowInstanceMVCActionCommand
 	}
 
 	protected void validateUser(Map<String, Serializable> workflowContext)
-		throws Exception {
+		throws PortalException {
 
 		long companyId = GetterUtil.getLong(
 			workflowContext.get(WorkflowConstants.CONTEXT_COMPANY_ID));

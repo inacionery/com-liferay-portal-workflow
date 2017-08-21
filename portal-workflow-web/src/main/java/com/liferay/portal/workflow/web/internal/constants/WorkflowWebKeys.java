@@ -17,7 +17,7 @@ package com.liferay.portal.workflow.web.internal.constants;
 /**
  * @author Adam Brandizzi
  */
-public interface WorkflowWebKeys {
+public class WorkflowWebKeys {
 
 	public static final String WORKFLOW_DEFAULT_TAB = "WORKFLOW_DEFAULT_TAB";
 

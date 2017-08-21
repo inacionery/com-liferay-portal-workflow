@@ -14,7 +14,6 @@
 
 package com.liferay.portal.workflow.definition.link.web.internal.request.prepocessor;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.workflow.definition.link.web.internal.display.context.WorkflowDefinitionLinkDisplayContext;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowWebKeys;
@@ -39,19 +38,14 @@ public class WorkflowDefinitionLinkRenderPreprocessor
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		try {
-			WorkflowDefinitionLinkDisplayContext displayContext =
-				new WorkflowDefinitionLinkDisplayContext(
-					renderRequest, renderResponse,
-					_workflowDefinitionLinkLocalService);
+		WorkflowDefinitionLinkDisplayContext displayContext =
+			new WorkflowDefinitionLinkDisplayContext(
+				renderRequest, renderResponse,
+				_workflowDefinitionLinkLocalService);
 
-			renderRequest.setAttribute(
-				WorkflowWebKeys.WORKFLOW_DEFINITION_LINK_DISPLAY_CONTEXT,
-				displayContext);
-		}
-		catch (PortalException pe) {
-			throw new PortletException(pe);
-		}
+		renderRequest.setAttribute(
+			WorkflowWebKeys.WORKFLOW_DEFINITION_LINK_DISPLAY_CONTEXT,
+			displayContext);
 	}
 
 	@Reference(unbind = "-")
