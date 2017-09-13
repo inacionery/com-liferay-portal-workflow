@@ -37,8 +37,9 @@ public class WorkflowDefinitionSearch
 	public static Map<String, String> orderableHeaders = new HashMap<>();
 
 	static {
-		headerNames.add("description");
 		headerNames.add("title");
+		headerNames.add("description");
+		headerNames.add("modifiedDate");
 
 		orderableHeaders.put("title", "modifiedDate");
 	}

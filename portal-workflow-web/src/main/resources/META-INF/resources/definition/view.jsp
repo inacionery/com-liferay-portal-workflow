@@ -32,7 +32,7 @@ else if (StringUtil.equals(definitionsNavigation, "not-published")) {
 	displayedStatus = WorkflowDefinitionConstants.STATUS_NOT_PUBLISHED;
 }
 
-String orderByCol = ParamUtil.getString(request, "orderByCol", "name");
+String orderByCol = ParamUtil.getString(request, "orderByCol", "title");
 String orderByType = ParamUtil.getString(request, "orderByType", "asc");
 
 PortletURL navigationPortletURL = renderResponse.createRenderURL();

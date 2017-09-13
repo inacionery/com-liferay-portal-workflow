@@ -42,7 +42,7 @@ public class WorkflowDefinitionPortletUtil {
 			orderByComparator = new WorkflowDefinitionModifiedDateComparator(
 				orderByAsc);
 		}
-		else if (orderByCol.equals("title")) {
+		else {
 			orderByComparator = new WorkflowDefinitionTitleComparator(
 				orderByAsc, locale);
 		}

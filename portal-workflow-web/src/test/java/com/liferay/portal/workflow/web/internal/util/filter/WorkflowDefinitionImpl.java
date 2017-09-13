@@ -35,15 +35,13 @@ public class WorkflowDefinitionImpl implements WorkflowDefinition {
 	}
 
 	public WorkflowDefinitionImpl(String name, String title) {
-		this(name, title, null);
+		this(name, title, null, null, false);
 	}
 
 	public WorkflowDefinitionImpl(
 		String name, String title, String description) {
 
-		_name = name;
-		_title = title;
-		_description = description;
+		this(name, title, description, null, false);
 	}
 
 	public WorkflowDefinitionImpl(
@@ -107,9 +105,9 @@ public class WorkflowDefinitionImpl implements WorkflowDefinition {
 		return _active;
 	}
 
-	private boolean _active;
-	private String _description;
-	private Date _modifiedDate;
+	private final boolean _active;
+	private final String _description;
+	private final Date _modifiedDate;
 	private final String _name;
 	private final String _title;
 
