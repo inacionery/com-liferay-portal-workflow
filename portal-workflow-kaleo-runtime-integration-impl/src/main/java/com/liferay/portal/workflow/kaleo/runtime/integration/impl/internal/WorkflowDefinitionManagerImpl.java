@@ -14,6 +14,7 @@
 
 package com.liferay.portal.workflow.kaleo.runtime.integration.impl.internal;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -409,7 +410,8 @@ public class WorkflowDefinitionManagerImpl
 	}
 
 	protected List<WorkflowDefinition> toWorkflowDefinitions(
-		KaleoDefinitionVersion[] kaleoDefinitionVersions) {
+			KaleoDefinitionVersion[] kaleoDefinitionVersions)
+		throws PortalException {
 
 		List<WorkflowDefinition> workflowDefinitions = new ArrayList<>(
 			kaleoDefinitionVersions.length);
