@@ -36,7 +36,6 @@ import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -93,8 +92,6 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String name = ParamUtil.getString(actionRequest, "name");
-		int version = ParamUtil.getInteger(actionRequest, "version");
 		Map<Locale, String> titleMap = LocalizationUtil.getLocalizationMap(
 			actionRequest, "title");
 
@@ -113,20 +110,9 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		validateWorkflowDefinition(content.getBytes());
 
 		WorkflowDefinition workflowDefinition =
-			workflowDefinitionManager.getWorkflowDefinition(
-				themeDisplay.getCompanyId(), name, version);
-
-		if (Objects.equals(workflowDefinition.getContent(), content)) {
-			workflowDefinition = workflowDefinitionManager.updateTitle(
-				themeDisplay.getCompanyId(), themeDisplay.getUserId(), name,
-				version, getTitle(titleMap));
-		}
-		else {
-			workflowDefinition =
-				workflowDefinitionManager.deployWorkflowDefinition(
-					themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-					getTitle(titleMap), content.getBytes());
-		}
+			workflowDefinitionManager.deployWorkflowDefinition(
+				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
+				getTitle(titleMap), content.getBytes());
 
 		addSuccessMessage(actionRequest, actionResponse);
 
