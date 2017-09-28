@@ -36,14 +36,42 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 </liferay-portlet:actionURL>
 
 <c:if test="<%= workflowDefinition != null %>">
-	<liferay-frontend:management-bar>
-		<liferay-frontend:management-bar-buttons>
-			<liferay-frontend:management-bar-sidenav-toggler-button
+	<liferay-frontend:info-bar>
+		<div class="container-fluid-1280">
+			<div class="info-bar-item">
+				<c:choose>
+					<c:when test="<%= workflowDefinition.isActive() %>">
+						<span class="label label-info"><%= LanguageUtil.get(request, "published") %></span>
+					</c:when>
+					<c:otherwise>
+						<span class="label label-secondary"><%= LanguageUtil.get(request, "not-published") %></span>
+					</c:otherwise>
+				</c:choose>
+			</div>
+
+			<%
+			String userName = workflowDefinitionDisplayContext.getUserName(workflowDefinition);
+			%>
+
+			<span>
+				<c:choose>
+					<c:when test="<%= userName == null %>">
+						<%= dateFormatTime.format(workflowDefinition.getModifiedDate()) %>
+					</c:when>
+					<c:otherwise>
+						<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinition.getModifiedDate()), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+					</c:otherwise>
+				</c:choose>
+			</span>
+		</div>
+
+		<liferay-frontend:info-bar-buttons>
+			<liferay-frontend:info-bar-sidenav-toggler-button
 				icon="info-circle"
 				label="info"
 			/>
-		</liferay-frontend:management-bar-buttons>
-	</liferay-frontend:management-bar>
+		</liferay-frontend:info-bar-buttons>
+	</liferay-frontend:info-bar>
 </c:if>
 
 <div class="closed container-fluid-1280 sidenav-container sidenav-right" id="<portlet:namespace />infoPanelId">
