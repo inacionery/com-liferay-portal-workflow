@@ -89,11 +89,9 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 								<liferay-ui:message key="version" /> <%= workflowDefinition.getVersion() %>
 							</h3>
 
-							<div>
-								<aui:model-context bean="<%= workflowDefinition %>" model="<%= WorkflowDefinition.class %>" />
+							<aui:model-context bean="<%= workflowDefinition %>" model="<%= WorkflowDefinition.class %>" />
 
-								<aui:workflow-status model="<%= WorkflowDefinition.class %>" status="<%= WorkflowConstants.STATUS_APPROVED %>" />
-							</div>
+							<aui:workflow-status model="<%= WorkflowDefinition.class %>" status="<%= WorkflowConstants.STATUS_APPROVED %>" />
 						</div>
 					</liferay-ui:section>
 
@@ -116,25 +114,32 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			<aui:input name="version" type="hidden" value="<%= version %>" />
 			<aui:input name="content" type="hidden" value="<%= content %>" />
 
-			<div class="card-horizontal">
+			<div class="card-horizontal main-content-card">
 				<div class="card-row-padded">
 					<liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>" message="you-cannot-deactivate-or-delete-this-definition" />
 					<liferay-ui:error exception="<%= WorkflowDefinitionFileException.class %>" message="please-enter-a-valid-definition-before-publishing" />
 					<liferay-ui:error exception="<%= WorkflowDefinitionTitleException.class %>" message="please-name-your-workflow-before-publishing" />
 
-					<aui:fieldset>
+					<aui:fieldset cssClass="workflow-definition-content">
 						<aui:col>
 							<aui:field-wrapper label="title">
 								<liferay-ui:input-localized name="title" xml='<%= BeanPropertiesUtil.getString(workflowDefinition, "title") %>' />
 							</aui:field-wrapper>
 						</aui:col>
 
-						<aui:col id="contentSourceWrapper">
-							<div class="content-source" id="<portlet:namespace />contentEditor"></div>
+						<aui:col cssClass="workflow-definition-upload">
+							<liferay-util:buffer var="importFileMark">
+								<aui:a href="#" id="uploadLink">
+									<%= StringUtil.toLowerCase(LanguageUtil.get(request, "import-a-file")) %>
+								</aui:a>
+							</liferay-util:buffer>
+
+							<liferay-ui:message arguments="<%= importFileMark %>" key="write-your-definition-or-x" translateArguments="<%= false %>" />
+							<input class="workflow-definition-upload-source" id="<portlet:namespace />upload" type="file" />
 						</aui:col>
 
-						<aui:col>
-							<aui:input inlineLabel="left" label="file" name="definition" type="file" />
+						<aui:col cssClass="workflow-definition-content-source-wrapper" id="contentSourceWrapper">
+							<div class="workflow-definition-content-source" id="<portlet:namespace />contentEditor"></div>
 						</aui:col>
 					</aui:fieldset>
 				</div>
@@ -171,10 +176,9 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		contentEditor.set(STR_VALUE, editorContentElement.val());
 	}
 
+	var uploadFile = $('#<portlet:namespace />upload');
 
-	var definitionFile = $('#<portlet:namespace />definition');
-
-	definitionFile.on(
+	uploadFile.on(
 		'change',
 		function(evt) {
 			var files = evt.target.files;
@@ -191,6 +195,16 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 				reader.readAsText(files[0]);
 			}
+		}
+	);
+
+	var uploadLink = A.one('#<portlet:namespace />uploadLink');
+
+	uploadLink.on(
+		'click',
+		function(event) {
+			event.preventDefault();
+			uploadFile.trigger('click');
 		}
 	);
 
