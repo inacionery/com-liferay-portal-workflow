@@ -135,7 +135,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			height: 600,
 			mode: 'xml',
 			tabSize: 4,
-			width: 600
+			width: '100%'
 		}
 	).render();
 
@@ -145,23 +145,6 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		contentEditor.set(STR_VALUE, editorContentElement.val());
 	}
 
-	contentEditor.set('width', A.one('#<portlet:namespace />contentSourceWrapper').get('clientWidth'));
-
-	var sidenavSlider = $('#<portlet:namespace />infoPanelId');
-
-	sidenavSlider.on(
-		'closed.lexicon.sidenav',
-		function(event) {
-			contentEditor.set('width', A.one('#<portlet:namespace />contentSourceWrapper').get('clientWidth'));
-		}
-	);
-
-	sidenavSlider.on(
-		'open.lexicon.sidenav',
-		function(event) {
-			contentEditor.set('width', A.one('#<portlet:namespace />contentSourceWrapper').get('clientWidth'));
-		}
-	);
 
 	var definitionFile = $('#<portlet:namespace />definition');
 

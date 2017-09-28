@@ -45,16 +45,16 @@ renderResponse.setTitle(workflowDefinition.getName());
 
 	<aui:input name="content" type="hidden" value="<%= content %>" />
 
-	<div class="card-horizontal">
+	<div class="card-horizontal main-content-card">
 		<div class="card-row-padded">
-			<aui:fieldset>
+			<aui:fieldset cssClass="workflow-definition-content">
 				<aui:col>
 					<aui:field-wrapper label="title">
 						<liferay-ui:input-localized disabled="<%= true %>" name="title" xml='<%= BeanPropertiesUtil.getString(workflowDefinition, "title") %>' />
 					</aui:field-wrapper>
 				</aui:col>
 
-				<aui:col id="contentSourceWrapper">
+				<aui:col cssClass="workflow-definition-editor" id="contentSourceWrapper">
 					<div class="content-source" id="<portlet:namespace />contentEditor"></div>
 				</aui:col>
 			</aui:fieldset>
@@ -78,7 +78,7 @@ renderResponse.setTitle(workflowDefinition.getName());
 			mode: 'xml',
 			readOnly: 'true',
 			tabSize: 4,
-			width: 600
+			width: '100%'
 		}
 	).render();
 
@@ -87,6 +87,4 @@ renderResponse.setTitle(workflowDefinition.getName());
 	if (editorContentElement) {
 		contentEditor.set(STR_VALUE, editorContentElement.val());
 	}
-
-	contentEditor.set('width', A.one('#<portlet:namespace />contentSourceWrapper').get('clientWidth'));
 </aui:script>
