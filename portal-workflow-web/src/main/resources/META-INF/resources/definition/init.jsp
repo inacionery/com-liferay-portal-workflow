@@ -42,6 +42,7 @@ page import="com.liferay.portal.kernel.workflow.RequiredWorkflowDefinitionExcept
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowDefinition" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowDefinitionFileException" %><%@
+page import="com.liferay.portal.kernel.workflow.WorkflowDefinitionTitleException" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowException" %><%@
 page import="com.liferay.portal.workflow.web.internal.constants.WorkflowDefinitionConstants" %><%@
 page import="com.liferay.portal.workflow.web.internal.dao.search.WorkflowDefinitionResultRowSplitter" %><%@
