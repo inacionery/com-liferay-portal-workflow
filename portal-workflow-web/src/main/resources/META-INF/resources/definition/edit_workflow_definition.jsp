@@ -28,7 +28,7 @@ String content = BeanParamUtil.getString(workflowDefinition, request, "content")
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, (workflowDefinition == null) ? "new-definition" : workflowDefinition.getName()) : workflowDefinition.getName());
+renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, "new-workflow") : workflowDefinition.getName());
 %>
 
 <liferay-portlet:actionURL name='<%= (workflowDefinition == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
@@ -143,12 +143,10 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			<aui:button-row>
 
 				<%
-				String taglibOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "saveDefinition');";
+				String taglibOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "publishDefinition');";
 				%>
 
-				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" primary="<%= true %>" value='<%= LanguageUtil.get(request, "save") %>' />
-
-				<aui:button cssClass="btn-lg" href="<%= redirect %>" type="cancel" />
+				<aui:button cssClass="btn-lg" onClick="<%= taglibOnClick %>" primary="<%= true %>" value='<%= (workflowDefinition == null) ? "publish" : "update" %>' />
 			</aui:button-row>
 		</aui:form>
 	</div>
@@ -197,7 +195,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 	);
 
 	Liferay.on(
-		'<portlet:namespace />saveDefinition',
+		'<portlet:namespace />publishDefinition',
 		function(event) {
 			var form = AUI.$('#<portlet:namespace />fm');
 
