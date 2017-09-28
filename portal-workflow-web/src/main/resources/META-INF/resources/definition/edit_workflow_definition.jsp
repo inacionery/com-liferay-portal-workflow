@@ -157,7 +157,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 	</div>
 </div>
 
-<aui:script use="aui-ace-editor,liferay-xml-formatter">
+<aui:script use="aui-ace-editor,liferay-xml-formatter,liferay-workflow-web">
 	var STR_VALUE = 'value';
 
 	var contentEditor = new A.AceEditor(
@@ -190,6 +190,8 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 					if (evt.target.readyState == FileReader.DONE) {
 						contentEditor.set(STR_VALUE, evt.target.result);
+
+						Liferay.WorkflowWeb.showSuccessMessage();
 					}
 				};
 
