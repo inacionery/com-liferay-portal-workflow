@@ -813,7 +813,7 @@
 
 		<execute function="UploadCommonFile#uploadCommonFileHidden" locator1="WorkflowUpload#FILE_UPLOAD" value1="${workflowDefinitionFile}" />
 
-		<execute macro="PortletEntry#save" />
+		<execute macro="PortletEntry#publish" />
 	</command>
 
 	<command name="viewAssignedToMyRolesTasksCP">
