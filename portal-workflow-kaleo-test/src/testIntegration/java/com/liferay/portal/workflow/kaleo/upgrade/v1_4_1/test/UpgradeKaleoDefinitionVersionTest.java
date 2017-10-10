@@ -65,6 +65,8 @@ public class UpgradeKaleoDefinitionVersionTest {
 		_name = StringUtil.randomString();
 		_timestamp = new Timestamp(System.currentTimeMillis());
 
+		_db = DBManagerUtil.getDB();
+
 		setUpUpgradeKaleoDefinitionVersion();
 	}
 
@@ -118,12 +120,10 @@ public class UpgradeKaleoDefinitionVersionTest {
 	}
 
 	protected void deleteKaleoDefinitionVersion(String name) throws Exception {
-		DB db = DBManagerUtil.getDB();
-
-		db.runSQL(
+		_db.runSQL(
 			"delete from KaleoDefinitionVersion where name = '" + name + "'");
 
-		db.runSQL("delete from KaleoDefinition where name = '" + name + "'");
+		_db.runSQL("delete from KaleoDefinition where name = '" + name + "'");
 	}
 
 	protected KaleoDefinitionVersion getKaleoDefinitionVersion(
@@ -169,6 +169,8 @@ public class UpgradeKaleoDefinitionVersionTest {
 
 			});
 	}
+
+	private DB _db;
 
 	@DeleteAfterTestRun
 	private Group _group;
