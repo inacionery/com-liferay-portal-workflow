@@ -20,7 +20,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 import com.liferay.portal.workflow.kaleo.model.KaleoNode;
+import com.liferay.portal.workflow.kaleo.service.KaleoDefinitionLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.KaleoInstanceLocalServiceUtil;
 import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil;
 
@@ -31,6 +33,16 @@ import com.liferay.portal.workflow.kaleo.service.KaleoNodeLocalServiceUtil;
 public class KaleoDefinitionVersionImpl extends KaleoDefinitionVersionBaseImpl {
 
 	public KaleoDefinitionVersionImpl() {
+	}
+
+	@Override
+	public KaleoDefinition getKaleoDefinition() throws PortalException {
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(getCompanyId());
+
+		return KaleoDefinitionLocalServiceUtil.getKaleoDefinition(
+			getName(), serviceContext);
 	}
 
 	@Override
