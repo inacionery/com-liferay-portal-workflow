@@ -295,7 +295,6 @@ public class UpgradeKaleoDefinitionVersion extends UpgradeProcess {
 					connection,
 					"update KaleoTransition set kaleoDefinitionVersionId = ? " +
 						"where kaleoDefinitionId = ?");
-
 			ResultSet rs = ps1.executeQuery()) {
 
 			while (rs.next()) {
