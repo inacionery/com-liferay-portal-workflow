@@ -66,6 +66,8 @@ public class KaleoTaskAssignmentInstanceLocalServiceImpl
 			kaleoTaskInstanceToken.getKaleoDefinitionVersionId());
 		kaleoTaskAssignmentInstance.setKaleoInstanceId(
 			kaleoTaskInstanceToken.getKaleoInstanceId());
+		kaleoTaskAssignmentInstance.setKaleoInstanceTokenId(
+			kaleoTaskInstanceToken.getKaleoInstanceTokenId());
 		kaleoTaskAssignmentInstance.setKaleoTaskInstanceTokenId(
 			kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId());
 		kaleoTaskAssignmentInstance.setKaleoTaskId(
