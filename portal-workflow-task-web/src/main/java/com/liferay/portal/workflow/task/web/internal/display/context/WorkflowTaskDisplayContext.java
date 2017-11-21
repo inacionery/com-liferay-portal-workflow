@@ -536,19 +536,14 @@ public class WorkflowTaskDisplayContext {
 		};
 	}
 
-	public Locale getTaskContentPreviewLocale() {
-		Locale locale = null;
-
+	public Locale getTaskContentLocale() {
 		String languageId = LanguageUtil.getLanguageId(_request);
 
 		if (Validator.isNotNull(languageId)) {
-			locale = LocaleUtil.fromLanguageId(languageId);
-		}
-		else {
-			locale = _workflowTaskRequestHelper.getLocale();
+			return LocaleUtil.fromLanguageId(languageId);
 		}
 
-		return locale;
+		return _workflowTaskRequestHelper.getLocale();
 	}
 
 	public String getTaskContentTitle(WorkflowTask workflowTask)
@@ -559,7 +554,7 @@ public class WorkflowTaskDisplayContext {
 		long classPK = getWorkflowContextEntryClassPK(workflowTask);
 
 		return HtmlUtil.escape(
-			workflowHandler.getTitle(classPK, getTaskContentPreviewLocale()));
+			workflowHandler.getTitle(classPK, getTaskContentLocale()));
 	}
 
 	public String getTaskInitiallyAssignedMessageArguments(

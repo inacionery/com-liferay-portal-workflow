@@ -23,16 +23,18 @@ AssetEntry assetEntry = workflowTaskDisplayContext.getAssetEntry();
 AssetRenderer assetRenderer = workflowTaskDisplayContext.getAssetRenderer();
 AssetRendererFactory assetRendererFactory = workflowTaskDisplayContext.getAssetRendererFactory();
 
-request.setAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW, Boolean.TRUE);
-
 String languageId = LanguageUtil.getLanguageId(request);
 
 String[] availableLanguageIds = assetRenderer.getAvailableLanguageIds();
 
+String title = assetRenderer.getTitle(workflowTaskDisplayContext.getTaskContentLocale());
+
+request.setAttribute(WebKeys.WORKFLOW_ASSET_PREVIEW, Boolean.TRUE);
+
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(assetRenderer.getTitle(workflowTaskDisplayContext.getTaskContentPreviewLocale()));
+renderResponse.setTitle(title);
 %>
 
 <c:if test="<%= assetEntry != null %>">

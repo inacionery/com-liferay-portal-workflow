@@ -141,7 +141,6 @@ renderResponse.setTitle(headerTitle);
 									<portlet:renderURL var="viewFullContentURL">
 										<portlet:param name="mvcPath" value="/view_content.jsp" />
 										<portlet:param name="redirect" value="<%= currentURL %>" />
-
 										<portlet:param name="languageId" value="<%= languageId %>" />
 
 										<c:if test="<%= assetEntry != null %>">
