@@ -106,9 +106,13 @@ renderResponse.setTitle(workflowDefinition.getName());
 		}
 	).render();
 
+	var xmlFormatter = new Liferay.XMLFormatter();
+
 	var editorContentElement = A.one('#<portlet:namespace />content');
 
 	if (editorContentElement) {
-		contentEditor.set(STR_VALUE, editorContentElement.val());
+		var content = xmlFormatter.format(editorContentElement.val());
+
+		contentEditor.set(STR_VALUE, content);
 	}
 </aui:script>
