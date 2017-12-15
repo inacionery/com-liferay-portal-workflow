@@ -31,8 +31,9 @@ import org.osgi.service.component.annotations.Component;
 
 /**
  * Configuration icon to allow the deactivation of a workflow definition.
- * @review
+ *
  * @author Jeyvison Nascimento
+ * @review
  */
 @Component(
 	immediate = true,
@@ -54,8 +55,9 @@ public class UnpublishDefinitionPortletConfigurationIcon
 	}
 
 	/**
-	 * Creates and returns an action URL passing the workflow
-	 * definition name and version as parameters.
+	 * Creates and returns an action URL passing the workflow definition name
+	 * and version as parameters.
+	 *
 	 * @review
 	 */
 	@Override
