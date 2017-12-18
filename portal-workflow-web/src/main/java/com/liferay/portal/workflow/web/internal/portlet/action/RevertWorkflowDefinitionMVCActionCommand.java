@@ -83,9 +83,6 @@ public class RevertWorkflowDefinitionMVCActionCommand
 		String dateTime = dateFormatTime.format(
 			workflowDefinition.getModifiedDate());
 
-		String message = LanguageUtil.get(
-			request, "restored-to-revision-from-x");
-
 		SessionMessages.add(
 			actionRequest, "requestProcessed",
 			LanguageUtil.format(
