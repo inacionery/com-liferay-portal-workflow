@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
@@ -30,11 +30,10 @@ import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 import java.text.Format;
 
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -56,47 +55,48 @@ public class RevertWorkflowDefinitionMVCActionCommand
 	/**
 	 * Adds a success message to the workflow definition reversion action
 	 *
-	 * @param actionRequest The actionRequest object of the action
-	 * @param workflowDefinition The workflow definition that will be reverted back to published.
-	 *
+	 * @param  actionRequest The actionRequest object of the action
+	 * @param  workflowDefinition The workflow definition that will be reverted
+	 *         back to published.
 	 * @review
 	 */
 	protected void addSuccessMessage(
 		ActionRequest actionRequest, WorkflowDefinition workflowDefinition) {
 
-		Locale locale = actionRequest.getLocale();
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		HttpServletRequest request = _portal.getHttpServletRequest(
-			actionRequest);
+		Locale locale = themeDisplay.getLocale();
 
-		Format dateFormatTime = null;
+		Format dateTimeFormat = null;
 
-		if (!DateUtil.isFormatAmPm(locale)) {
-			dateFormatTime = FastDateFormatFactoryUtil.getSimpleDateFormat(
-				"MMM d, yyyy, HH:mm", locale);
-		}
-		else {
-			dateFormatTime = FastDateFormatFactoryUtil.getSimpleDateFormat(
+		if (DateUtil.isFormatAmPm(locale)) {
+			dateTimeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
 				"MMM d, yyyy, hh:mm a", locale);
 		}
+		else {
+			dateTimeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+				"MMM d, yyyy, HH:mm", locale);
+		}
 
-		String dateTime = dateFormatTime.format(
+		String dateTime = dateTimeFormat.format(
 			workflowDefinition.getModifiedDate());
+
+		ResourceBundle resourceBundle =
+			_resourceBundleLoader.loadResourceBundle(locale);
 
 		SessionMessages.add(
 			actionRequest, "requestProcessed",
 			LanguageUtil.format(
-				locale,
-				LanguageUtil.get(request, "restored-to-revision-from-x"),
-				dateTime));
+				resourceBundle, "restored-to-revision-from-x", dateTime));
 	}
 
 	/**
-	 * Reverts a workflow definition to the published state, creating a new version of it.
+	 * Reverts a workflow definition to the published state, creating a new
+	 * version of it.
 	 *
-	 * @param actionRequest
-	 * @param actionResponse
-	 *
+	 * @param  actionRequest
+	 * @param  actionResponse
 	 * @review
 	 */
 	@Override
@@ -123,7 +123,10 @@ public class RevertWorkflowDefinitionMVCActionCommand
 		addSuccessMessage(actionRequest, workflowDefinition);
 	}
 
-	@Reference
-	private Portal _portal;
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.portal.workflow.web)",
+		unbind = "-"
+	)
+	private ResourceBundleLoader _resourceBundleLoader;
 
 }
