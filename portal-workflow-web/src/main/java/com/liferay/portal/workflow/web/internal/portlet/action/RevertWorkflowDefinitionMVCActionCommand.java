@@ -29,6 +29,7 @@ import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 
 import java.text.Format;
 
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -56,15 +57,17 @@ public class RevertWorkflowDefinitionMVCActionCommand
 	 * Adds a success message to the workflow definition reversion action
 	 *
 	 * @param  actionRequest The actionRequest object of the action
-	 * @param  workflowDefinition The workflow definition that will be reverted
-	 *         back to published.
 	 * @review
 	 */
+	@Override
 	protected void addSuccessMessage(
-		ActionRequest actionRequest, WorkflowDefinition workflowDefinition) {
+		ActionRequest actionRequest, ActionResponse actionResponse) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		Date previousDefinitionModifiedDate = (Date)actionRequest.getAttribute(
+			"previousDefinitionModifiedDate");
 
 		Locale locale = themeDisplay.getLocale();
 
@@ -79,8 +82,7 @@ public class RevertWorkflowDefinitionMVCActionCommand
 				"MMM d, yyyy, HH:mm", locale);
 		}
 
-		String dateTime = dateTimeFormat.format(
-			workflowDefinition.getModifiedDate());
+		String dateTime = dateTimeFormat.format(previousDefinitionModifiedDate);
 
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(locale);
@@ -110,20 +112,22 @@ public class RevertWorkflowDefinitionMVCActionCommand
 		String name = ParamUtil.getString(actionRequest, "name");
 		int version = ParamUtil.getInteger(actionRequest, "version");
 
-		WorkflowDefinition workflowDefinition =
+		WorkflowDefinition previousDefinitionRevision =
 			WorkflowDefinitionManagerUtil.getWorkflowDefinition(
 				themeDisplay.getCompanyId(), name, version);
 
-		String content = workflowDefinition.getContent();
+		actionRequest.setAttribute(
+			"previousDefinitionModifiedDate",
+			previousDefinitionRevision.getModifiedDate());
 
-		WorkflowDefinition newWorkflowDefinition =
+		String content = previousDefinitionRevision.getContent();
+
+		WorkflowDefinition workflowDefinition =
 			workflowDefinitionManager.deployWorkflowDefinition(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-				workflowDefinition.getTitle(), content.getBytes());
+				previousDefinitionRevision.getTitle(), content.getBytes());
 
-		addSuccessMessage(actionRequest, workflowDefinition);
-
-		setRedirectAttribute(actionRequest, newWorkflowDefinition);
+		setRedirectAttribute(actionRequest, workflowDefinition);
 
 		sendRedirect(actionRequest, actionResponse);
 	}
