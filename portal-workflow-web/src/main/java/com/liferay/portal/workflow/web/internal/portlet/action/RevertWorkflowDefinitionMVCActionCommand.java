@@ -18,8 +18,8 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 
-import java.text.Format;
+import java.text.DateFormat;
 
 import java.util.Date;
 import java.util.Locale;
@@ -66,21 +66,21 @@ public class RevertWorkflowDefinitionMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Date previousDefinitionModifiedDate = (Date)actionRequest.getAttribute(
-			"previousDefinitionModifiedDate");
-
 		Locale locale = themeDisplay.getLocale();
 
-		Format dateTimeFormat = null;
+		DateFormat dateTimeFormat = null;
 
 		if (DateUtil.isFormatAmPm(locale)) {
-			dateTimeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			dateTimeFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 				"MMM d, yyyy, hh:mm a", locale);
 		}
 		else {
-			dateTimeFormat = FastDateFormatFactoryUtil.getSimpleDateFormat(
+			dateTimeFormat = DateFormatFactoryUtil.getSimpleDateFormat(
 				"MMM d, yyyy, HH:mm", locale);
 		}
+
+		Date previousDefinitionModifiedDate = ParamUtil.getDate(
+			actionRequest, "previousDefinitionModifiedDate", dateTimeFormat);
 
 		String dateTime = dateTimeFormat.format(previousDefinitionModifiedDate);
 
