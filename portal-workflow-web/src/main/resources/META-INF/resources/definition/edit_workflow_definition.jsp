@@ -226,20 +226,24 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 	var uploadFile = $('#<portlet:namespace />upload');
 
+	var previousContent = '';
+
 	uploadFile.on(
 		'change',
 		function(evt) {
 			var files = evt.target.files;
-
 			if (files) {
 				var reader = new FileReader();
 
 				reader.onloadend = function(evt) {
 
 					if (evt.target.readyState == FileReader.DONE) {
+						previousContent = contentEditor.get(STR_VALUE);
 						contentEditor.set(STR_VALUE, evt.target.result);
 
-						Liferay.WorkflowWeb.showSuccessMessage();
+						uploadFile.val("");
+
+						Liferay.WorkflowWeb.showDefinitionImportSuccessMessage('<portlet:namespace />');
 					}
 				};
 
@@ -266,6 +270,16 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 			form.fm('content').val(contentEditor.get(STR_VALUE));
 
 			submitForm(form);
+		}
+	);
+
+	Liferay.on(
+		'<portlet:namespace />undoDefinition',
+		function(event) {
+			if (contentEditor) {
+				contentEditor.set(STR_VALUE, previousContent);
+				Liferay.WorkflowWeb.showActionUndoneSuccessMessage();
+			}
 		}
 	);
 </aui:script>
