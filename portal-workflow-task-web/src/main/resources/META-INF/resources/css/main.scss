@@ -327,18 +327,18 @@
 	margin-bottom: 0px;
 }
 
-.modal-full-screen .modal-body {
-	overflow: hidden;
-}
-
 .task-content {
 	height: 10.5em;
 	margin-bottom: 2em;
-	overflow-y: hidden;
+	overflow-y: auto;
 
 	textarea {
 		height: 7.5em;
 	}
+}
+
+.task-content-comment {
+	overflow: hidden;
 }
 
 .task-button {
