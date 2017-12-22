@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
+import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregatePredicateFilter;
@@ -31,7 +33,9 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.workflow.constants.WorkflowWebKeys;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowDefinitionConstants;
+import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 import com.liferay.portal.workflow.web.internal.display.context.util.WorkflowDefinitionRequestHelper;
 import com.liferay.portal.workflow.web.internal.search.WorkflowDefinitionSearchTerms;
 import com.liferay.portal.workflow.web.internal.util.WorkflowDefinitionPortletUtil;
@@ -43,6 +47,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import javax.portlet.PortletException;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,6 +91,59 @@ public class WorkflowDefinitionDisplayContext {
 
 	public String getDescription(WorkflowDefinition workflowDefinition) {
 		return HtmlUtil.escape(workflowDefinition.getDescription());
+	}
+
+	public Object[] getMessageArguments(
+			List<WorkflowDefinitionLink> workflowDefinitionLinks)
+		throws PortletException {
+
+		if (workflowDefinitionLinks.isEmpty()) {
+			return new Object[0];
+		}
+		else if (workflowDefinitionLinks.size() == 1) {
+			return new Object[] {
+				getLocalizedAssetName(
+					workflowDefinitionLinks.get(0).getClassName()),
+				getConfigureAssignementLink()
+			};
+		}
+		else if (workflowDefinitionLinks.size() == 2) {
+			return new Object[] {
+				getLocalizedAssetName(
+					workflowDefinitionLinks.get(0).getClassName()),
+				getLocalizedAssetName(
+					workflowDefinitionLinks.get(1).getClassName()),
+				getConfigureAssignementLink()
+			};
+		}
+		else {
+			int moreAssets = workflowDefinitionLinks.size() - 2;
+
+			return new Object[] {
+				getLocalizedAssetName(
+					workflowDefinitionLinks.get(0).getClassName()),
+				getLocalizedAssetName(
+					workflowDefinitionLinks.get(1).getClassName()),
+				moreAssets, getConfigureAssignementLink()
+			};
+		}
+	}
+
+	public String getMessageKey(
+		List<WorkflowDefinitionLink> workflowDefinitionLinks) {
+
+		if (workflowDefinitionLinks.isEmpty()) {
+			return StringPool.BLANK;
+		}
+		else if (workflowDefinitionLinks.size() == 1) {
+			return "workflow-in-use-remove-assignement-to-x-x";
+		}
+		else if (workflowDefinitionLinks.size() == 2) {
+			return "workflow-in-use-remove-assignements-to-x-and-x-x";
+		}
+		else {
+			return "workflow-in-use-remove-assignements-to-x-x-and-x-more-x";
+		}
 	}
 
 	public Date getModifiedDate(WorkflowDefinition workflowDefinition) {
@@ -229,6 +289,38 @@ public class WorkflowDefinitionDisplayContext {
 			createPredicateFilter(description, title, status, andOperator);
 
 		return ListUtil.filter(workflowDefinitions, predicateFilter);
+	}
+
+	protected String getConfigureAssignementLink() throws PortletException {
+		PortletURL renderURL =
+			_workflowDefinitionRequestHelper.getLiferayPortletResponse().
+				createLiferayPortletURL(
+					WorkflowPortletKeys.CONTROL_PANEL_WORKFLOW,
+					PortletRequest.RENDER_PHASE);
+
+		renderURL.setParameter("mvcPath", "/view.jsp");
+		renderURL.setParameter(
+			"tab", WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK);
+		renderURL.setWindowState(_workflowDefinitionRequestHelper.
+			getLiferayPortletRequest().getWindowState());
+
+		StringBuilder link = new StringBuilder();
+
+		link.append("<a href='");
+		link.append(renderURL.toString());
+		link.append("' class='alert-link'>");
+		link.append(
+			LanguageUtil.get(
+				_workflowDefinitionRequestHelper.getRequest(),
+				"configure-assignments"));
+		link.append("</a>");
+
+		return link.toString();
+	}
+
+	protected String getLocalizedAssetName(String className) {
+		return ResourceActionsUtil.getModelResource(
+			_workflowDefinitionRequestHelper.getLocale(), className);
 	}
 
 	protected OrderByComparator<WorkflowDefinition>
