@@ -69,27 +69,7 @@ public class NotificationMessageHelper {
 		KaleoInstanceToken kaleoInstanceToken =
 			executionContext.getKaleoInstanceToken();
 
-		long userId = kaleoInstanceToken.getUserId();
-
-		KaleoTaskInstanceToken kaleoTaskInstanceToken =
-			executionContext.getKaleoTaskInstanceToken();
-
-		if (kaleoTaskInstanceToken != null) {
-			ServiceContext serviceContext =
-				executionContext.getServiceContext();
-
-			try {
-				userId = serviceContext.getGuestOrUserId();
-			}
-			catch (PortalException pe) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
-						"Unable to get user from context, using userId from " +
-							"kaleoInstanceToken instead",
-						pe);
-				}
-			}
-		}
+		long userId = getUserId(executionContext, kaleoInstanceToken);
 
 		jsonObject.put(
 			WorkflowConstants.CONTEXT_USER_ID, String.valueOf(userId));
@@ -99,6 +79,9 @@ public class NotificationMessageHelper {
 		jsonObject.put(
 			"workflowInstanceId", kaleoInstanceToken.getKaleoInstanceId());
 
+		KaleoTaskInstanceToken kaleoTaskInstanceToken =
+			executionContext.getKaleoTaskInstanceToken();
+
 		if (kaleoTaskInstanceToken != null) {
 			jsonObject.put(
 				"workflowTaskId",
@@ -106,6 +89,28 @@ public class NotificationMessageHelper {
 		}
 
 		return jsonObject;
+	}
+
+	protected long getUserId(
+		ExecutionContext executionContext,
+		KaleoInstanceToken kaleoInstanceToken) {
+
+		try {
+			ServiceContext serviceContext =
+				executionContext.getServiceContext();
+
+			return serviceContext.getGuestOrUserId();
+		}
+		catch (PortalException pe) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Unable to get user from context, using userId from " +
+						"kaleoInstanceToken instead",
+					pe);
+			}
+
+			return kaleoInstanceToken.getUserId();
+		}
 	}
 
 	@Reference
