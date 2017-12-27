@@ -111,6 +111,12 @@ public class DefaultWorkflowEngineImpl
 				_workflowValidator.validate(definition);
 			}
 
+			String name = (String)serviceContext.getAttribute("name");
+
+			if (Validator.isNotNull(name)) {
+				definition.setName(name);
+			}
+
 			KaleoDefinition kaleoDefinition =
 				kaleoDefinitionLocalService.fetchKaleoDefinition(
 					definition.getName(), serviceContext);

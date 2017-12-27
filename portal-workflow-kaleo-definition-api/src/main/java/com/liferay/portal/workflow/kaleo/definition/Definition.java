@@ -124,12 +124,16 @@ public class Definition {
 		return _nodesMap.containsKey(name);
 	}
 
+	public void setName(String name) {
+		_name = name;
+	}
+
 	private final String _content;
 	private final String _description;
 	private final List<Fork> _forks = new ArrayList<>();
 	private State _initialState;
 	private final List<Join> _joins = new ArrayList<>();
-	private final String _name;
+	private String _name;
 	private final Map<String, Node> _nodesMap = new HashMap<>();
 	private List<State> _terminalStates;
 	private final int _version;

@@ -52,6 +52,13 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 public class WorkflowDefinitionManagerImpl
 	implements WorkflowDefinitionManager {
 
+	/**
+	 * @deprecated As of 1.0.0, replaced by {@link
+	 *             #deployWorkflowDefinition(long, long, String, String,
+	 *             byte[])}
+	 * @review
+	 */
+	@Deprecated
 	@Override
 	public WorkflowDefinition deployWorkflowDefinition(
 			long companyId, long userId, String title, byte[] bytes)
@@ -61,6 +68,22 @@ public class WorkflowDefinitionManagerImpl
 
 		serviceContext.setCompanyId(companyId);
 		serviceContext.setUserId(userId);
+
+		return _workflowEngine.deployWorkflowDefinition(
+			title, new UnsyncByteArrayInputStream(bytes), serviceContext);
+	}
+
+	@Override
+	public WorkflowDefinition deployWorkflowDefinition(
+			long companyId, long userId, String title, String name,
+			byte[] bytes)
+		throws WorkflowException {
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setCompanyId(companyId);
+		serviceContext.setUserId(userId);
+		serviceContext.setAttribute("name", name);
 
 		return _workflowEngine.deployWorkflowDefinition(
 			title, new UnsyncByteArrayInputStream(bytes), serviceContext);
