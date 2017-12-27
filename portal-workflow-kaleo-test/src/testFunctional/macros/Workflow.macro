@@ -359,8 +359,6 @@
 			<var name="key_menuItem" value="Unpublish" />
 		</execute>
 
-		<execute function="Confirm" value1="Are you sure you want to deactivate this?" />
-
 		<execute macro="Workflow#waitForSuccessMessageHide" />
 	</command>
 
