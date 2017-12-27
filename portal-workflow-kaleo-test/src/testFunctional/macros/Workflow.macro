@@ -381,7 +381,11 @@
 			<var name="key_menuItem" value="Delete" />
 		</execute>
 
-		<execute function="Confirm" value1="Are you sure you want to delete this? It will be deleted immediately." />
+		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_TITLE" value1="Delete Workflow?" />
+
+		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_BODY" value1="A deleted workflow cannot be recovered." />
+
+		<execute macro="Button#clickDelete" />
 
 		<execute macro="Workflow#waitForSuccessMessageHide" />
 	</command>
