@@ -56,6 +56,8 @@ public class DeleteWorkflowDefinitionMVCActionCommand
 		workflowDefinitionManager.undeployWorkflowDefinition(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(), name,
 			version);
+
+		addSuccessMessage(actionRequest, actionResponse);
 	}
 
 	@Override

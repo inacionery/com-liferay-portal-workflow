@@ -56,6 +56,8 @@ public class RestoreWorkflowDefinitionMVCActionCommand
 		workflowDefinitionManager.updateActive(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(), name,
 			version, isActive());
+
+		addSuccessMessage(actionRequest, actionResponse);
 	}
 
 	@Override
