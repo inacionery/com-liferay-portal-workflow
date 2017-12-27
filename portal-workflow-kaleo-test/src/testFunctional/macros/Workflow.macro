@@ -359,6 +359,8 @@
 			<var name="key_menuItem" value="Unpublish" />
 		</execute>
 
+		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Workflow unpublished successfully." />
+
 		<execute macro="Workflow#waitForSuccessMessageHide" />
 	</command>
 
@@ -386,6 +388,8 @@
 		<execute function="AssertTextEquals" locator1="WorkflowDefinition#DIALOG_BOX_BODY" value1="A deleted workflow cannot be recovered." />
 
 		<execute macro="Button#clickDelete" />
+
+		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="Workflow deleted successfully." />
 
 		<execute macro="Workflow#waitForSuccessMessageHide" />
 	</command>
