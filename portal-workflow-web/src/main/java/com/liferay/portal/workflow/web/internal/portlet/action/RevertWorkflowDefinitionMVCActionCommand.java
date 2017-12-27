@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
+import com.liferay.portal.workflow.constants.WorkflowWebKeys;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 
 import java.text.DateFormat;
@@ -79,10 +80,11 @@ public class RevertWorkflowDefinitionMVCActionCommand
 				"MMM d, yyyy, HH:mm", locale);
 		}
 
-		Date previousDefinitionModifiedDate = ParamUtil.getDate(
-			actionRequest, "previousDefinitionModifiedDate", dateTimeFormat);
+		Date workflowDefinitionModifiedDate = ParamUtil.getDate(
+			actionRequest, WorkflowWebKeys.WORKFLOW_DEFINITION_MODIFIED_DATE,
+			dateTimeFormat);
 
-		String dateTime = dateTimeFormat.format(previousDefinitionModifiedDate);
+		String dateTime = dateTimeFormat.format(workflowDefinitionModifiedDate);
 
 		ResourceBundle resourceBundle =
 			_resourceBundleLoader.loadResourceBundle(locale);
@@ -117,7 +119,7 @@ public class RevertWorkflowDefinitionMVCActionCommand
 				themeDisplay.getCompanyId(), name, version);
 
 		actionRequest.setAttribute(
-			"previousDefinitionModifiedDate",
+			WorkflowWebKeys.WORKFLOW_DEFINITION_MODIFIED_DATE,
 			previousWorkflowDefinition.getModifiedDate());
 
 		String content = previousWorkflowDefinition.getContent();
