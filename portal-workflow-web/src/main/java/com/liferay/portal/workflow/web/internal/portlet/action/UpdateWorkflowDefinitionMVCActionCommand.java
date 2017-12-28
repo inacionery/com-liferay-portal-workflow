@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionFileException;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
@@ -117,10 +118,15 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 			throw new WorkflowDefinitionTitleException();
 		}
 
+		String name = ParamUtil.getString(actionRequest, "name");
 		String content = ParamUtil.getString(actionRequest, "content");
 
 		if (Validator.isNull(content)) {
 			throw new WorkflowDefinitionFileException();
+		}
+
+		if (Validator.isNull(name)) {
+			name = portalUUID.generate();
 		}
 
 		validateWorkflowDefinition(content.getBytes());
@@ -128,7 +134,7 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		WorkflowDefinition workflowDefinition =
 			workflowDefinitionManager.deployWorkflowDefinition(
 				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-				getTitle(titleMap), content.getBytes());
+				getTitle(titleMap), name, content.getBytes());
 
 		addSuccessMessage(actionRequest, actionResponse);
 
@@ -216,6 +222,9 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 	protected Portal portal;
 
 	protected ResourceBundleLoader resourceBundleLoader;
+
+	@Reference
+	protected PortalUUID portalUUID;
 
 	@Reference
 	protected WorkflowDefinitionManager workflowDefinitionManager;
