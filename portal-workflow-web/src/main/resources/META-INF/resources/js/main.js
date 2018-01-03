@@ -3,7 +3,8 @@ AUI.add(
 	function(A) {
 		var WorkflowWeb = {
 
-			openConfirmDeleteDialog : function(title, message, actionUrl) {
+			openConfirmDeleteDialog: function(title, message, actionUrl) {
+				var instance = this;
 
 				var dialog = Liferay.Util.Window.getWindow(
 					{
@@ -20,7 +21,7 @@ AUI.add(
 										label: Liferay.Language.get('delete'),
 										on: {
 											click: function() {
-												 window.location.assign(actionUrl);
+												window.location.assign(actionUrl);
 											}
 										}
 									},
@@ -55,7 +56,6 @@ AUI.add(
 						title: title
 					}
 				);
-
 			},
 
 			previewBeforeRevert: function(event, renderUrl, actionUrl, title) {

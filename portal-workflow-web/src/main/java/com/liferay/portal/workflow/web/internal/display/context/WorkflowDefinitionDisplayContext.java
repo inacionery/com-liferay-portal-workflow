@@ -29,7 +29,9 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManagerUtil;
@@ -46,6 +48,7 @@ import com.liferay.portal.workflow.web.internal.util.filter.WorkflowDefinitionTi
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
@@ -60,8 +63,10 @@ import javax.servlet.http.HttpServletRequest;
 public class WorkflowDefinitionDisplayContext {
 
 	public WorkflowDefinitionDisplayContext(
-		RenderRequest renderRequest, UserLocalService userLocalService) {
+		RenderRequest renderRequest, ResourceBundleLoader resourceBundleLoader,
+		UserLocalService userLocalService) {
 
+		_resourceBundleLoader = resourceBundleLoader;
 		_userLocalService = userLocalService;
 		_workflowDefinitionRequestHelper = new WorkflowDefinitionRequestHelper(
 			renderRequest);
@@ -292,35 +297,37 @@ public class WorkflowDefinitionDisplayContext {
 	}
 
 	protected String getConfigureAssignementLink() throws PortletException {
-		PortletURL renderURL =
-			_workflowDefinitionRequestHelper.getLiferayPortletResponse().
-				createLiferayPortletURL(
-					WorkflowPortletKeys.CONTROL_PANEL_WORKFLOW,
-					PortletRequest.RENDER_PHASE);
+		PortletURL portletURL = getWorkflowDefinitionLinkPortletURL();
 
-		renderURL.setParameter("mvcPath", "/view.jsp");
-		renderURL.setParameter(
-			"tab", WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK);
-		renderURL.setWindowState(_workflowDefinitionRequestHelper.
-			getLiferayPortletRequest().getWindowState());
+		ResourceBundle resourceBundle =
+			_resourceBundleLoader.loadResourceBundle(
+				_workflowDefinitionRequestHelper.getLocale());
 
-		StringBuilder link = new StringBuilder();
-
-		link.append("<a href='");
-		link.append(renderURL.toString());
-		link.append("' class='alert-link'>");
-		link.append(
-			LanguageUtil.get(
-				_workflowDefinitionRequestHelper.getRequest(),
-				"configure-assignments"));
-		link.append("</a>");
-
-		return link.toString();
+		return StringUtil.replace(
+			_HTML, new String[] {"[$RENDER_URL$]", "[$MESSAGE$]"},
+			new String[] {
+				portletURL.toString(),
+				LanguageUtil.get(resourceBundle, "configure-assignments")
+			});
 	}
 
 	protected String getLocalizedAssetName(String className) {
 		return ResourceActionsUtil.getModelResource(
 			_workflowDefinitionRequestHelper.getLocale(), className);
+	}
+
+	protected PortletURL getWorkflowDefinitionLinkPortletURL() {
+		PortletURL portletURL =
+			_workflowDefinitionRequestHelper.getLiferayPortletResponse().
+				createLiferayPortletURL(
+					WorkflowPortletKeys.CONTROL_PANEL_WORKFLOW,
+					PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter("mvcPath", "/view.jsp");
+		portletURL.setParameter(
+			"tab", WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK);
+
+		return portletURL;
 	}
 
 	protected OrderByComparator<WorkflowDefinition>
@@ -340,6 +347,10 @@ public class WorkflowDefinitionDisplayContext {
 				_workflowDefinitionRequestHelper.getLocale());
 	}
 
+	private static final String _HTML =
+		"<a class='alert-link' href='[$RENDER_URL$]'>[$MESSAGE$]</a>";
+
+	private final ResourceBundleLoader _resourceBundleLoader;
 	private final UserLocalService _userLocalService;
 	private final WorkflowDefinitionRequestHelper
 		_workflowDefinitionRequestHelper;

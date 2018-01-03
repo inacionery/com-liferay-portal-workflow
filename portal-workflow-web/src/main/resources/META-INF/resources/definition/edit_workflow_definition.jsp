@@ -91,7 +91,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 					</h4>
 				</div>
 
-				<liferay-ui:tabs cssClass="navbar-no-collapse panel panel-default" names="details,revision-history" refresh="<%= false %>" type="tabs nav-tabs-default">
+				<liferay-ui:tabs cssClass="navbar-no-collapse panel panel-default" names="details,revision-history" refresh="<%= false %>" type="nav-tabs-default tabs">
 					<liferay-ui:section>
 						<div class="sidebar-list">
 
@@ -232,16 +232,17 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		'change',
 		function(evt) {
 			var files = evt.target.files;
+
 			if (files) {
 				var reader = new FileReader();
 
 				reader.onloadend = function(evt) {
-
 					if (evt.target.readyState == FileReader.DONE) {
 						previousContent = contentEditor.get(STR_VALUE);
+
 						contentEditor.set(STR_VALUE, evt.target.result);
 
-						uploadFile.val("");
+						uploadFile.val('');
 
 						Liferay.WorkflowWeb.showDefinitionImportSuccessMessage('<portlet:namespace />');
 					}
@@ -258,6 +259,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		'click',
 		function(event) {
 			event.preventDefault();
+
 			uploadFile.trigger('click');
 		}
 	);
@@ -278,6 +280,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 		function(event) {
 			if (contentEditor) {
 				contentEditor.set(STR_VALUE, previousContent);
+
 				Liferay.WorkflowWeb.showActionUndoneSuccessMessage();
 			}
 		}
