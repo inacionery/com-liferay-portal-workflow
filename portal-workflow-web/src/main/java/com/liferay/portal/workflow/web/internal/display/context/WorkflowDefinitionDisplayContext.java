@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.AggregatePredicateFilter;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PredicateFilter;
@@ -108,6 +109,29 @@ public class WorkflowDefinitionDisplayContext {
 
 	public String getDescription(WorkflowDefinition workflowDefinition) {
 		return HtmlUtil.escape(workflowDefinition.getDescription());
+	}
+
+	public String getDuplicateTitle(WorkflowDefinition workflowDefinition) {
+		if ((workflowDefinition == null) ||
+			Validator.isNull(workflowDefinition.getTitle())) {
+
+			return StringPool.BLANK;
+		}
+
+		ResourceBundle resourceBundle =
+			_resourceBundleLoader.loadResourceBundle(
+				_workflowDefinitionRequestHelper.getLocale());
+
+		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
+			workflowDefinition.getTitle());
+
+		String newTitle =
+			LanguageUtil.get(resourceBundle, "copy-of") + StringPool.SPACE +
+				workflowDefinition.getTitle(defaultLanguageId);
+
+		return LocalizationUtil.updateLocalization(
+			workflowDefinition.getTitle(), "title", newTitle,
+			defaultLanguageId);
 	}
 
 	public Object[] getMessageArguments(
