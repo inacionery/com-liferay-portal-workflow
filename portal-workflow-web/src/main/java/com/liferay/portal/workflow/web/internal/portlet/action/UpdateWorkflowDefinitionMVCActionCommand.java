@@ -119,14 +119,15 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		}
 
 		String name = ParamUtil.getString(actionRequest, "name");
+
+		if (Validator.isNull(name)) {
+			name = portalUUID.generate();
+		}
+
 		String content = ParamUtil.getString(actionRequest, "content");
 
 		if (Validator.isNull(content)) {
 			throw new WorkflowDefinitionFileException();
-		}
-
-		if (Validator.isNull(name)) {
-			name = portalUUID.generate();
 		}
 
 		validateWorkflowDefinition(content.getBytes());
@@ -221,10 +222,10 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 	@Reference
 	protected Portal portal;
 
-	protected ResourceBundleLoader resourceBundleLoader;
-
 	@Reference
 	protected PortalUUID portalUUID;
+
+	protected ResourceBundleLoader resourceBundleLoader;
 
 	@Reference
 	protected WorkflowDefinitionManager workflowDefinitionManager;
