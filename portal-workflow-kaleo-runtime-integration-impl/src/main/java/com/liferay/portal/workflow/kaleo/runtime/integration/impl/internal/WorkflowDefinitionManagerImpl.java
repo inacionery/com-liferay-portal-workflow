@@ -184,8 +184,22 @@ public class WorkflowDefinitionManagerImpl
 		}
 	}
 
+	/**
+	 * @deprecated As of 1.0.0, replaced by {@link
+	 *             #getLatestWorkflowDefinition(long, String)}
+	 * @review
+	 */
+	@Deprecated
 	@Override
 	public WorkflowDefinition getLatestKaleoDefinition(
+			long companyId, String name)
+		throws WorkflowException {
+
+		return getLatestWorkflowDefinition(companyId, name);
+	}
+
+	@Override
+	public WorkflowDefinition getLatestWorkflowDefinition(
 			long companyId, String name)
 		throws WorkflowException {
 
