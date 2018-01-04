@@ -100,7 +100,7 @@ public class DefaultWorkflowEngineImpl
 
 	@Override
 	public WorkflowDefinition deployWorkflowDefinition(
-			String title, InputStream inputStream,
+			String title, String name, InputStream inputStream,
 			ServiceContext serviceContext)
 		throws WorkflowException {
 
@@ -111,18 +111,12 @@ public class DefaultWorkflowEngineImpl
 				_workflowValidator.validate(definition);
 			}
 
-			String name = (String)serviceContext.getAttribute("name");
-
-			if (Validator.isNotNull(name)) {
-				definition.setName(name);
-			}
-
 			KaleoDefinition kaleoDefinition =
 				kaleoDefinitionLocalService.fetchKaleoDefinition(
 					definition.getName(), serviceContext);
 
 			WorkflowDefinition workflowDefinition = _workflowDeployer.deploy(
-				title, definition, serviceContext);
+				title, name, definition, serviceContext);
 
 			if (kaleoDefinition != null) {
 				List<WorkflowDefinitionLink> workflowDefinitionLinks =

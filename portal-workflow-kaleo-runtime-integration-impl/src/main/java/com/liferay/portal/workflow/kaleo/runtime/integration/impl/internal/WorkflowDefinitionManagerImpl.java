@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
@@ -64,13 +65,9 @@ public class WorkflowDefinitionManagerImpl
 			long companyId, long userId, String title, byte[] bytes)
 		throws WorkflowException {
 
-		ServiceContext serviceContext = new ServiceContext();
+		String name = portalUUID.generate();
 
-		serviceContext.setCompanyId(companyId);
-		serviceContext.setUserId(userId);
-
-		return _workflowEngine.deployWorkflowDefinition(
-			title, new UnsyncByteArrayInputStream(bytes), serviceContext);
+		return deployWorkflowDefinition(companyId, userId, title, name, bytes);
 	}
 
 	@Override
@@ -83,10 +80,9 @@ public class WorkflowDefinitionManagerImpl
 
 		serviceContext.setCompanyId(companyId);
 		serviceContext.setUserId(userId);
-		serviceContext.setAttribute("name", name);
 
 		return _workflowEngine.deployWorkflowDefinition(
-			title, new UnsyncByteArrayInputStream(bytes), serviceContext);
+			title, name, new UnsyncByteArrayInputStream(bytes), serviceContext);
 	}
 
 	@Override
@@ -398,7 +394,7 @@ public class WorkflowDefinitionManagerImpl
 			String content = kaleoDefinition.getContent();
 
 			return _workflowEngine.deployWorkflowDefinition(
-				title, new UnsyncByteArrayInputStream(content.getBytes()),
+				title, name, new UnsyncByteArrayInputStream(content.getBytes()),
 				serviceContext);
 		}
 		catch (Exception e) {
@@ -454,6 +450,9 @@ public class WorkflowDefinitionManagerImpl
 
 		return workflowDefinitions;
 	}
+
+	@Reference
+	protected PortalUUID portalUUID;
 
 	@Reference
 	private KaleoDefinitionLocalService _kaleoDefinitionLocalService;
