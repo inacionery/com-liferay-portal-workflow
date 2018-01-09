@@ -69,7 +69,7 @@ public class DefaultWorkflowDeployer implements WorkflowDeployer {
 		else {
 			kaleoDefinition =
 				_kaleoDefinitionLocalService.incrementKaleoDefinition(
-					definition, title, serviceContext);
+					definition, name, title, serviceContext);
 		}
 
 		KaleoDefinitionVersion kaleoDefinitionVersion =
