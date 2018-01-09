@@ -162,7 +162,8 @@ public class KaleoDefinitionLocalServiceTest {
 
 		kaleoDefinition =
 			KaleoDefinitionLocalServiceUtil.incrementKaleoDefinition(
-				definition, StringUtil.randomString(), _serviceContext);
+				definition, kaleoDefinition.getName(),
+				StringUtil.randomString(), _serviceContext);
 
 		KaleoDefinitionLocalServiceUtil.activateKaleoDefinition(
 			kaleoDefinition.getKaleoDefinitionId(), _serviceContext);
