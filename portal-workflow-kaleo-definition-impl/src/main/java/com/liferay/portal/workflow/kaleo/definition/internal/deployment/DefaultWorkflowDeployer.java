@@ -53,17 +53,16 @@ public class DefaultWorkflowDeployer implements WorkflowDeployer {
 
 	@Override
 	public WorkflowDefinition deploy(
-			String title, String name, Definition definition,
-			ServiceContext serviceContext)
+			String title, Definition definition, ServiceContext serviceContext)
 		throws PortalException {
 
 		KaleoDefinition kaleoDefinition =
 			_kaleoDefinitionLocalService.fetchKaleoDefinition(
-				name, serviceContext);
+				definition.getName(), serviceContext);
 
 		if (kaleoDefinition == null) {
 			kaleoDefinition = _kaleoDefinitionLocalService.addKaleoDefinition(
-				name, title, definition.getDescription(),
+				definition.getName(), title, definition.getDescription(),
 				definition.getContent(), 1, serviceContext);
 		}
 		else {

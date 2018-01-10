@@ -100,7 +100,7 @@ public class DefaultWorkflowEngineImpl
 
 	@Override
 	public WorkflowDefinition deployWorkflowDefinition(
-			String title, String name, InputStream inputStream,
+			String title, InputStream inputStream,
 			ServiceContext serviceContext)
 		throws WorkflowException {
 
@@ -116,7 +116,7 @@ public class DefaultWorkflowEngineImpl
 					definition.getName(), serviceContext);
 
 			WorkflowDefinition workflowDefinition = _workflowDeployer.deploy(
-				title, name, definition, serviceContext);
+				title, definition, serviceContext);
 
 			if (kaleoDefinition != null) {
 				List<WorkflowDefinitionLink> workflowDefinitionLinks =

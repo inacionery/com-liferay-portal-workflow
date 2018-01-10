@@ -408,7 +408,7 @@ public class WorkflowDefinitionManagerImpl
 			String content = kaleoDefinition.getContent();
 
 			return _workflowEngine.deployWorkflowDefinition(
-				title, name, new UnsyncByteArrayInputStream(content.getBytes()),
+				title, new UnsyncByteArrayInputStream(content.getBytes()),
 				serviceContext);
 		}
 		catch (Exception e) {
