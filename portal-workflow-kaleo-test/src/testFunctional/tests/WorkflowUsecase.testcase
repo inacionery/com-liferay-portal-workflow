@@ -462,7 +462,7 @@
 		</execute>
 
 		<execute macro="DDLList#addCP">
-			<var name="workflowDefinition" value="Legal and Marketing Approval (Version 1)" />
+			<var name="workflowDefinition" value="Double Approver Definition (Version 1)" />
 		</execute>
 
 		<execute macro="DDLDataDefinition#selectCP" />
@@ -679,7 +679,7 @@
 		</execute>
 
 		<execute macro="Workflow#configureWorkflowViaFolderInfo">
-			<var name="workflowDefinition" value="Category Specific Approval (Version 1)" />
+			<var name="workflowDefinition" value="Category Specific (Version 1)" />
 		</execute>
 
 		<execute macro="WebContentNavigator#gotoAddCP" />
