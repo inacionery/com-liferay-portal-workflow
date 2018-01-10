@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
 import com.liferay.portal.kernel.workflow.WorkflowException;
 import com.liferay.portal.kernel.workflow.comparator.WorkflowComparatorFactory;
 import com.liferay.portal.workflow.kaleo.KaleoWorkflowModelConverter;
+import com.liferay.portal.workflow.kaleo.definition.Definition;
+import com.liferay.portal.workflow.kaleo.definition.parser.WorkflowModelParser;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinition;
 import com.liferay.portal.workflow.kaleo.model.KaleoDefinitionVersion;
 import com.liferay.portal.workflow.kaleo.runtime.WorkflowEngine;
@@ -65,9 +67,11 @@ public class WorkflowDefinitionManagerImpl
 			long companyId, long userId, String title, byte[] bytes)
 		throws WorkflowException {
 
-		String name = portalUUID.generate();
+		Definition definition = _workflowModelParser.parse(
+			new UnsyncByteArrayInputStream(bytes));
 
-		return deployWorkflowDefinition(companyId, userId, title, name, bytes);
+		return deployWorkflowDefinition(
+			companyId, userId, title, definition.getName(), bytes);
 	}
 
 	@Override
@@ -408,7 +412,7 @@ public class WorkflowDefinitionManagerImpl
 			String content = kaleoDefinition.getContent();
 
 			return _workflowEngine.deployWorkflowDefinition(
-				title, new UnsyncByteArrayInputStream(content.getBytes()),
+				title, name, new UnsyncByteArrayInputStream(content.getBytes()),
 				serviceContext);
 		}
 		catch (Exception e) {
@@ -487,5 +491,8 @@ public class WorkflowDefinitionManagerImpl
 		policyOption = ReferencePolicyOption.GREEDY
 	)
 	private volatile WorkflowEngine _workflowEngine;
+
+	@Reference
+	private WorkflowModelParser _workflowModelParser;
 
 }
