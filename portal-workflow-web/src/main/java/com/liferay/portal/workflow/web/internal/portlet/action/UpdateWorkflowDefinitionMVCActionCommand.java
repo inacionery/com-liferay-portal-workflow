@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.uuid.PortalUUID;
 import com.liferay.portal.kernel.workflow.WorkflowDefinition;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionFileException;
 import com.liferay.portal.kernel.workflow.WorkflowDefinitionManager;
@@ -119,10 +118,6 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 		}
 
 		String name = ParamUtil.getString(actionRequest, "name");
-
-		if (Validator.isNull(name)) {
-			name = portalUUID.generate();
-		}
 
 		String content = ParamUtil.getString(actionRequest, "content");
 
@@ -221,9 +216,6 @@ public class UpdateWorkflowDefinitionMVCActionCommand
 
 	@Reference
 	protected Portal portal;
-
-	@Reference
-	protected PortalUUID portalUUID;
 
 	protected ResourceBundleLoader resourceBundleLoader;
 
