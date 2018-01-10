@@ -827,12 +827,7 @@
 
 		<execute macro="PortletEntry#publish" />
 
-		<if>
-			<isset var="workflowDefinitionUploadTitle" />
-			<then>
-				<execute function="AssertTextEquals#assertPartialText" locator1="Portlet#HEADER" value1="${workflowDefinitionUploadTitle}" />
-			</then>
-		</if>
+		<execute function="AssertTextEquals#assertPartialText" locator1="Portlet#HEADER" value1="${workflowDefinitionTitle}" />
 
 		<execute macro="Navigator#gotoBack" />
 	</command>

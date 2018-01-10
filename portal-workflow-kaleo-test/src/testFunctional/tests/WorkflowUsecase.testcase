@@ -422,7 +422,6 @@
 		<execute macro="Workflow#uploadDefinition">
 			<var name="workflowDefinitionFile" value="workflow_definition_legal_marketing.xml" />
 			<var name="workflowDefinitionTitle" value="Double Approver Definition" />
-			<var name="workflowDefinitionUploadTitle" value="Legal and Marketing Approval" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoPortlet">
@@ -1042,7 +1041,6 @@
 		<execute macro="Workflow#uploadDefinition">
 			<var name="workflowDefinitionFile" value="workflow_definition_1.xml" />
 			<var name="workflowDefinitionTitle" value="New Uploaded Definition" />
-			<var name="workflowDefinitionUploadTitle" value="Uploaded Definition" />
 		</execute>
 
 		<execute macro="Workflow#viewDefinitionPublished">
