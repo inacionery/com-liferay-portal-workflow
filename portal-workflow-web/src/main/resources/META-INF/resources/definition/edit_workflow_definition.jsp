@@ -120,7 +120,14 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 								</div>
 
 								<span class="info-content lfr-card-modified-by-text">
-									<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+									<c:choose>
+										<c:when test="<%= userName == null %>">
+											<%= dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)) %>
+										</c:when>
+										<c:otherwise>
+											<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+										</c:otherwise>
+									</c:choose>
 								</span>
 							</div>
 
@@ -132,7 +139,14 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 								</div>
 
 								<span class="info-content lfr-card-modified-by-text">
-									<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinition.getModifiedDate()), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+									<c:choose>
+										<c:when test="<%= userName == null %>">
+											<%= dateFormatTime.format(workflowDefinition.getModifiedDate()) %>
+										</c:when>
+										<c:otherwise>
+											<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinition.getModifiedDate()), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+										</c:otherwise>
+									</c:choose>
 								</span>
 							</div>
 
