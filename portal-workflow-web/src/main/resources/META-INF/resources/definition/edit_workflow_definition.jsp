@@ -109,7 +109,7 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 						<div class="sidebar-list">
 
 							<%
-							String userName = workflowDefinitionDisplayContext.getUserName(workflowDefinition);
+							String creatorUserName = workflowDefinitionDisplayContext.getCreatorUserName(workflowDefinition);
 							%>
 
 							<div class="card-row-padded created-date">
@@ -121,15 +121,19 @@ renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request,
 
 								<span class="info-content lfr-card-modified-by-text">
 									<c:choose>
-										<c:when test="<%= userName == null %>">
+										<c:when test="<%= creatorUserName == null %>">
 											<%= dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)) %>
 										</c:when>
 										<c:otherwise>
-											<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)), userName} %>" key="x-by-x" translateArguments="<%= false %>" />
+											<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(workflowDefinitionDisplayContext.getCreatedDate(workflowDefinition)), creatorUserName} %>" key="x-by-x" translateArguments="<%= false %>" />
 										</c:otherwise>
 									</c:choose>
 								</span>
 							</div>
+
+							<%
+							String userName = workflowDefinitionDisplayContext.getUserName(workflowDefinition);
+							%>
 
 							<div class="card-row-padded last-modified">
 								<div>
