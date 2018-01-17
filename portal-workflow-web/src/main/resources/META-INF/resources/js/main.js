@@ -140,7 +140,7 @@ AUI.add(
 				);
 			},
 
-			previewBeforeRevert: function(event, renderUrl, actionUrl, title) {
+			previewBeforeRevertDialog: function(event, renderUrl, actionUrl, title) {
 				var instance = this;
 
 				var form = A.Node.create('<form />');

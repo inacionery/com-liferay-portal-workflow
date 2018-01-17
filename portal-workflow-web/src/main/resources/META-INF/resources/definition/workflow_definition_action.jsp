@@ -23,7 +23,7 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 WorkflowDefinition workflowDefinition = (WorkflowDefinition)row.getObject();
 
-String duplicationTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workflowDefinition);
+String duplicateTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workflowDefinition);
 %>
 
 <liferay-portlet:actionURL name="duplicateWorkflowDefinition" var="duplicateWorkflowDefinition">
@@ -94,7 +94,7 @@ String duplicationTitle = workflowDefinitionDisplayContext.getDuplicateTitle(wor
 <div class="hide" id="<%= randomNamespace %>titleInputLocalized">
 	<aui:col>
 		<aui:field-wrapper label="title">
-			<liferay-ui:input-localized name="title" xml="<%= duplicationTitle %>" />
+			<liferay-ui:input-localized name="title" xml="<%= duplicateTitle %>" />
 		</aui:field-wrapper>
 	</aui:col>
 
@@ -114,5 +114,5 @@ String duplicationTitle = workflowDefinitionDisplayContext.getDuplicateTitle(wor
 
 	var confirmBeforeDuplicateDialog = A.rbind('confirmBeforeDuplicateDialog', Liferay.WorkflowWeb, '<%= duplicateWorkflowDefinition %>', title, '<%= randomNamespace %>');
 
-	Liferay.delegateClick('<portlet:namespace />duplicate<%= String.valueOf(workflowDefinition.getName()) %>', confirmBeforeDuplicateDialog);
+	Liferay.delegateClick('<portlet:namespace />duplicate<%= workflowDefinition.getName() %>', confirmBeforeDuplicateDialog);
 </aui:script>

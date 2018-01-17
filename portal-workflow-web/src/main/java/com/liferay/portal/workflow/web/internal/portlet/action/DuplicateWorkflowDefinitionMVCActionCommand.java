@@ -16,7 +16,6 @@ package com.liferay.portal.workflow.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
@@ -24,7 +23,6 @@ import com.liferay.portal.workflow.web.internal.constants.WorkflowPortletKeys;
 import java.util.ResourceBundle;
 
 import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -43,20 +41,8 @@ public class DuplicateWorkflowDefinitionMVCActionCommand
 	extends UpdateWorkflowDefinitionMVCActionCommand {
 
 	@Override
-	protected void addSuccessMessage(
-		ActionRequest actionRequest, ActionResponse actionResponse) {
-
-		ResourceBundle resourceBundle = resourceBundleLoader.loadResourceBundle(
-			portal.getLocale(actionRequest));
-
-		String successMessage = getSuccessMessage(
-			resourceBundle, actionRequest);
-
-		SessionMessages.add(actionRequest, "requestProcessed", successMessage);
-	}
-
-	protected String getSuccessMessage(
-		ResourceBundle resourceBundle, ActionRequest actionRequest) {
+	protected String getSuccessMessage(ActionRequest actionRequest) {
+		ResourceBundle resourceBundle = getResourceBundle(actionRequest);
 
 		String duplicatedDefinitionName = ParamUtil.getString(
 			actionRequest, "duplicatedDefinitionTitle");

@@ -112,26 +112,22 @@ public class WorkflowDefinitionDisplayContext {
 	}
 
 	public String getDuplicateTitle(WorkflowDefinition workflowDefinition) {
-		if ((workflowDefinition == null) ||
-			Validator.isNull(workflowDefinition.getTitle())) {
-
+		if (workflowDefinition == null) {
 			return StringPool.BLANK;
 		}
 
-		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				_workflowDefinitionRequestHelper.getLocale());
+		ResourceBundle resourceBundle = getResourceBundle();
 
-		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(
-			workflowDefinition.getTitle());
+		String title = workflowDefinition.getTitle();
 
-		String newTitle =
-			LanguageUtil.get(resourceBundle, "copy-of") + StringPool.SPACE +
-				workflowDefinition.getTitle(defaultLanguageId);
+		String defaultLanguageId = LocalizationUtil.getDefaultLanguageId(title);
+
+		String newTitle = LanguageUtil.format(
+			resourceBundle, "copy-of-x",
+			workflowDefinition.getTitle(defaultLanguageId));
 
 		return LocalizationUtil.updateLocalization(
-			workflowDefinition.getTitle(), "title", newTitle,
-			defaultLanguageId);
+			title, "title", newTitle, defaultLanguageId);
 	}
 
 	public Object[] getMessageArguments(
@@ -343,9 +339,7 @@ public class WorkflowDefinitionDisplayContext {
 	protected String getConfigureAssignementLink() throws PortletException {
 		PortletURL portletURL = getWorkflowDefinitionLinkPortletURL();
 
-		ResourceBundle resourceBundle =
-			_resourceBundleLoader.loadResourceBundle(
-				_workflowDefinitionRequestHelper.getLocale());
+		ResourceBundle resourceBundle = getResourceBundle();
 
 		return StringUtil.replace(
 			_HTML, new String[] {"[$RENDER_URL$]", "[$MESSAGE$]"},
@@ -358,6 +352,11 @@ public class WorkflowDefinitionDisplayContext {
 	protected String getLocalizedAssetName(String className) {
 		return ResourceActionsUtil.getModelResource(
 			_workflowDefinitionRequestHelper.getLocale(), className);
+	}
+
+	protected ResourceBundle getResourceBundle() {
+		return _resourceBundleLoader.loadResourceBundle(
+			_workflowDefinitionRequestHelper.getLocale());
 	}
 
 	protected PortletURL getWorkflowDefinitionLinkPortletURL() {
