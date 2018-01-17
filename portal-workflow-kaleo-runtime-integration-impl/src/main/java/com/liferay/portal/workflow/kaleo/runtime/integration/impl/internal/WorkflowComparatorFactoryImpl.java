@@ -78,9 +78,9 @@ public class WorkflowComparatorFactoryImpl
 		boolean ascending) {
 
 		return new WorkflowInstanceStartDateComparator(
-			ascending, "createDate ASC, kaleoInstanceId ASC",
-			"createDate DESC, kaleoInstanceId DESC",
-			new String[] {"createDate", "kaleoInstanceId"});
+			ascending, "completed ASC, createDate ASC, kaleoInstanceId ASC",
+			"completed DESC, createDate DESC, kaleoInstanceId DESC",
+			new String[] {"completed", "createDate", "kaleoInstanceId"});
 	}
 
 	@Override
