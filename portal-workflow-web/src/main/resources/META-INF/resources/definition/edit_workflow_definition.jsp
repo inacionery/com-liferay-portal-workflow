@@ -27,13 +27,12 @@ int version = BeanParamUtil.getInteger(workflowDefinition, request, "version");
 String content = BeanParamUtil.getString(workflowDefinition, request, "content");
 boolean active = BeanParamUtil.getBoolean(workflowDefinition, request, "active");
 
-String duplicationTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workflowDefinition);
-boolean showDraftButton = workflowDefinitionDisplayContext.isShowDraftButton(workflowDefinition);
+String duplicateTitle = workflowDefinitionDisplayContext.getDuplicateTitle(workflowDefinition);
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefinition));
+renderResponse.setTitle((workflowDefinition == null) ? LanguageUtil.get(request, "new-workflow") : workflowDefinition.getTitle(LanguageUtil.getLanguageId(request)));
 %>
 
 <liferay-ui:error exception="<%= RequiredWorkflowDefinitionException.class %>">
@@ -49,7 +48,7 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 	<liferay-ui:message arguments="<%= messageArguments %>" key="<%= messageKey %>" translateArguments="<%= false %>" />
 </liferay-ui:error>
 
-<liferay-portlet:actionURL name='<%= (workflowDefinition == null) ? "addWorkflowDefinition" : "updateWorkflowDefinition" %>' var="editWorkflowDefinitionURL">
+<liferay-portlet:actionURL name="deployWorkflowDefinition" var="deployWorkflowDefinitionURL">
 	<portlet:param name="mvcPath" value="/definition/edit_workflow_definition.jsp" />
 </liferay-portlet:actionURL>
 
@@ -58,7 +57,7 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 	<portlet:param name="redirect" value="<%= currentURL %>" />
 </liferay-portlet:actionURL>
 
-<liferay-portlet:actionURL name="updateWorkflowDefinitionDraft" var="saveWorkflowAsDraftURL">
+<liferay-portlet:actionURL name="saveWorkflowDefinition" var="saveWorkflowDefinitionURL">
 	<portlet:param name="mvcPath" value="/definition/edit_workflow_definition.jsp" />
 </liferay-portlet:actionURL>
 
@@ -240,13 +239,13 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 
 				<aui:button onClick="<%= taglibUpdateOnClick %>" primary="<%= true %>" value='<%= (workflowDefinition == null || !active) ? "publish" : "update" %>' />
 
-				<c:if test="<%= showDraftButton %>">
+				<c:if test="<%= (workflowDefinition == null) || !active %>">
 
 					<%
-					String taglibSaveAsDraftOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "saveDefinitionAsDraft');";
+					String taglibSaveOnClick = "Liferay.fire('" + liferayPortletResponse.getNamespace() + "saveDefinition');";
 					%>
 
-					<aui:button onClick="<%= taglibSaveAsDraftOnClick %>" primary="<%= true %>" value="save-as-draft" />
+					<aui:button onClick="<%= taglibSaveOnClick %>" value="save" />
 				</c:if>
 			</aui:button-row>
 		</aui:form>
@@ -257,7 +256,7 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 	<div class="hide" id="<%= randomNamespace %>titleInputLocalized">
 		<aui:col>
 			<aui:field-wrapper label="title">
-				<liferay-ui:input-localized name="title" xml="<%= duplicationTitle %>" />
+				<liferay-ui:input-localized name="title" xml="<%= duplicateTitle %>" />
 			</aui:field-wrapper>
 		</aui:col>
 
@@ -275,8 +274,6 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 
 <aui:script use="aui-ace-editor,liferay-xml-formatter,liferay-workflow-web">
 	var STR_VALUE = 'value';
-
-	var title = '<liferay-ui:message key="duplicate-workflow" />';
 
 	var contentEditor = new A.AceEditor(
 		{
@@ -347,7 +344,7 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 		function(event) {
 			var form = AUI.$('#<portlet:namespace />fm');
 
-			form.attr('action', '<%= editWorkflowDefinitionURL %>')
+			form.attr('action', '<%= deployWorkflowDefinitionURL %>');
 
 			var titleValue = form.fm('title_' + defaultLanguageId).val();
 
@@ -362,11 +359,11 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 	);
 
 	Liferay.on(
-		'<portlet:namespace />saveDefinitionAsDraft',
+		'<portlet:namespace />saveDefinition',
 		function(event) {
 			var form = AUI.$('#<portlet:namespace />fm');
 
-			form.attr('action', '<%= saveWorkflowAsDraftURL %>')
+			form.attr('action', '<%= saveWorkflowDefinitionURL %>');
 
 			var titleValue = form.fm('title_' + defaultLanguageId).val();
 
@@ -391,10 +388,12 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 		}
 	);
 
+	var duplicateWorkflowTitle = '<liferay-ui:message key="duplicate-workflow" />';
+
 	Liferay.on(
 		'<portlet:namespace />duplicateDefinition',
 		function(event) {
-			Liferay.WorkflowWeb.confirmBeforeDuplicateDialog(this,'<%= duplicateWorkflowDefinition %>', title, '<%= randomNamespace %>');
+			Liferay.WorkflowWeb.confirmBeforeDuplicateDialog(this, '<%= duplicateWorkflowDefinition %>', duplicateWorkflowTitle, '<%= randomNamespace %>');
 		}
 	);
 </aui:script>
