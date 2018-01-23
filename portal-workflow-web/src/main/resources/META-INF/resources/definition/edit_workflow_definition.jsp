@@ -209,7 +209,7 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 					<aui:fieldset cssClass="workflow-definition-content">
 						<aui:col>
 							<aui:field-wrapper label="title">
-								<liferay-ui:input-localized name="title" xml='<%= BeanPropertiesUtil.getString(workflowDefinition, "title") %>' />
+								<liferay-ui:input-localized name="title" placeholder="untitled-workflow" xml='<%= BeanPropertiesUtil.getString(workflowDefinition, "title") %>' />
 							</aui:field-wrapper>
 						</aui:col>
 
@@ -338,12 +338,22 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 		}
 	);
 
+	var untitledWorkflowTitle = '<liferay-ui:message key="untitled-workflow" />';
+
+	var defaultLanguageId = '<%= themeDisplay.getLanguageId() %>';
+
 	Liferay.on(
 		'<portlet:namespace />publishDefinition',
 		function(event) {
 			var form = AUI.$('#<portlet:namespace />fm');
 
 			form.attr('action', '<%= editWorkflowDefinitionURL %>')
+
+			var titleValue = form.fm('title_' + defaultLanguageId).val();
+
+			if (!titleValue) {
+				form.fm('title_' + defaultLanguageId).val(untitledWorkflowTitle);
+			}
 
 			form.fm('content').val(contentEditor.get(STR_VALUE));
 
@@ -357,6 +367,12 @@ renderResponse.setTitle(workflowDefinitionDisplayContext.getTitle(workflowDefini
 			var form = AUI.$('#<portlet:namespace />fm');
 
 			form.attr('action', '<%= saveWorkflowAsDraftURL %>')
+
+			var titleValue = form.fm('title_' + defaultLanguageId).val();
+
+			if (!titleValue) {
+				form.fm('title_' + defaultLanguageId).val(untitledWorkflowTitle);
+			}
 
 			form.fm('content').val(contentEditor.get(STR_VALUE));
 
